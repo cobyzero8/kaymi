@@ -1,0 +1,188 @@
+/* Estilos base para todos los dispositivos */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box; /* Asegura que el padding no cause desbordamiento */
+}
+
+.top-image-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px; /* Espacio entre la imagen superior y el contenido */
+}
+
+.top-image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.calculator-container {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    flex-shrink: 0;
+    width: 400px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.result-text {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+#btn-contra {
+    background-color: #dc3545;
+    color: white;
+}
+
+#btn-contra:hover {
+    background-color: #c82333;
+}
+
+#btn-favor {
+    background-color: #28a745;
+    color: white;
+}
+
+#btn-favor:hover {
+    background-color: #218838;
+}
+
+h2 {
+    margin-top: 30px;
+    color: #333;
+}
+
+#final-result {
+    color: #007BFF;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+#reset {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #6c757d;
+    color: white;
+}
+
+#reset:hover {
+    background-color: #5a6268;
+}
+
+.image-container {
+    text-align: center;
+    flex: 1;
+}
+
+.side-image img {
+    max-width: 110%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* --- Media Queries para Responsividad --- */
+
+/* Para tablets y dispositivos más pequeños (hasta 992px) */
+@media (max-width: 992px) {
+    .main-container {
+        flex-direction: column; /* Apila los elementos verticalmente */
+        gap: 40px;
+    }
+
+    .calculator-container {
+        width: 100%;
+        max-width: 500px; /* Limita el ancho en tablets */
+        order: 1; /* La calculadora aparece primero */
+    }
+
+    .image-container {
+        order: 2; /* Las imágenes aparecen después */
+        width: 100%;
+        max-width: 300px; /* Limita el tamaño de la imagen */
+    }
+    
+    /* Oculta una de las imágenes en pantallas medianas para no ser redundante */
+    .main-container .image-container:last-of-type {
+        display: none;
+    }
+}
+
+/* Para teléfonos móviles (hasta 576px) */
+@media (max-width: 576px) {
+    body {
+        padding: 15px;
+    }
+
+    .calculator-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .button-group {
+        flex-direction: column; /* Apila los botones */
+    }
+}

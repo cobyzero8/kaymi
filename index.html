@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora con Imágenes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="top-image-container">
+        <img src="C:\Users\LENOVO\gunbon\REGLA 20.png" alt="Imagen Superior">
+        
+    </div>
+    
+    <div class="main-container">
+        <div class="image-container side-image">
+            <img src="C:\Users\LENOVO\gunbon\VALORES REGLA 20.png" alt="Imagen Izquierda">
+        </div>
+
+        <div class="calculator-container">
+            <h1>Calculadora Especial</h1>
+            <p>Multiplica los números y aplica una condición.</p>
+            <div class="input-group">
+                <input type="number" id="num1" placeholder="factor del circulo" value="0">
+                <input type="number" id="num2" placeholder="viento" value="0">
+            </div>
+            <p class="result-text">Resultado de la multiplicación: <span id="multiplication-result">0</span></p>
+            
+            <div class="button-group">
+                <button id="btn-contra">En Contra (-70)</button>
+                <button id="btn-favor">A Favor (+70)</button>
+            </div>
+
+            <h2>Resultado Final: <span id="final-result">0</span></h2>
+
+            <button id="reset">Reiniciar</button>
+        </div>
+
+        <div class="image-container side-image">
+            <img src="C:\Users\LENOVO\gunbon\FACTOR.png" alt="Imagen Derecha">
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
