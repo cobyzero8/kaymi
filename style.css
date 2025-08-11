@@ -1,12 +1,12 @@
 /* General Body Styles */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=arial:wght@400;700&display=swap');
 
 body {
     font-family: 'Orbitron', sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #0a0a1a; /* Dark blue-black background */
-    color: #e0e0e0; /* Light gray text */
+    background-color: #f2f2f8; /* Dark blue-black background */
+    color: #0c03bd; /* Light gray text */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,12 +18,12 @@ body {
     width: 90%;
     max-width: 800px;
     margin: 20px auto;
-    background: rgba(10, 10, 30, 0.85); /* Semi-transparent dark background */
+    background: rgba(244, 244, 244, 0.85); /* Semi-transparent dark background */
     padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5); /* Cyan glow */
+    box-shadow: 0 0 25px rgba(255, 0, 30, 0.5); /* Cyan glow */
     text-align: center;
-    border: 1px solid rgba(0, 255, 255, 0.7);
+    border: 1px solid rgba(193, 239, 8, 0.7);
     backdrop-filter: blur(10px);
 }
 
@@ -35,7 +35,7 @@ body {
 .header img {
     max-width: 80%;
     height: auto;
-    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.7)); /* Glowing effect for the image */
+    filter: drop-shadow(0 0 15px rgba(4, 100, 234, 0.7)); /* Glowing effect for the image */
 }
 
 /* Circle Container for Checkboxes */
@@ -44,9 +44,9 @@ body {
     width: 320px;
     height: 320px;
     margin: 40px auto;
-    border: 3px solid #00ffff; /* Solid cyan border */
+    border: 3px solid #ffffff; /* Solid cyan border */
     border-radius: 50%;
-    box-shadow: 0 0 20px #00ffff, inset 0 0 20px #00ffff;
+    box-shadow: 0 0 5px #00ffff, inset 0 0 5px #00ffff;
 }
 
 /* SVG Line Styles */
@@ -67,32 +67,32 @@ body {
     align-items: center;
     gap: 15px;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 83, 155, 0.975);
     border-radius: 10px;
-    border: 1px solid #00ffff;
+    border: 1px solid #ddcf0b;
 }
 
 .controls label {
     font-size: 1.2em;
     font-weight: 700;
-    color: #00ffff; /* Cyan text */
-    text-shadow: 0 0 5px #00ffff;
+    color: #e4f1f1; /* Cyan text */
+    text-shadow: 0 0 5px #12a6a6;
 }
 
 .controls input[type="text"] {
     padding: 10px 15px;
-    border: 2px solid #00ffff;
+    border: 2px solid #011010;
     border-radius: 8px;
     font-size: 1em;
     width: 120px;
-    background-color: #0a0a1a;
-    color: #e0e0e0;
+    background-color: #e9e9ee;
+    color: #140202;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .controls input[type="text"]:focus {
-    border-color: #ff00ff; /* Magenta focus color */
-    box-shadow: 0 0 10px #ff00ff;
+    border-color: #6f15b4; /* Cyan focus color */
+    box-shadow: 0 0 10px #b20bbd;
     outline: none;
 }
 
@@ -101,8 +101,8 @@ body {
     padding: 10px 20px;
     font-size: 1em;
     font-weight: bold;
-    color: #0a0a1a;
-    background-color: #00ffff; /* Cyan button */
+    color: #eeeef0;
+    background-color: #0a0a0a; /* Cyan button */
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -111,9 +111,9 @@ body {
 }
 
 #reset-button:hover {
-    background-color: #fff;
-    color: #000;
-    box-shadow: 0 0 15px #fff;
+    background-color: #fafcfc;
+    color: #0a0a1a;
+    box-shadow: 0 0 15px #eff2f2;
     transform: translateY(-2px);
 }
 
@@ -123,16 +123,16 @@ body {
     padding: 20px;
     font-size: 3.5em;
     font-weight: 700;
-    color: #ff00ff; /* Magenta for result */
-    background-color: rgba(0, 0, 0, 0.5);
+    color: #ffffff; /* Cyan for result */
+    background-color: rgba(14, 115, 222, 0.5);
     border-radius: 10px;
     min-height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s;
-    border: 2px solid #ff00ff;
-    text-shadow: 0 0 10px #ff00ff;
+    border: 2px solid #0f6fe3f9;
+    text-shadow: 0 0 10px #00ffff;
 }
 
 /* Bottom Image */
