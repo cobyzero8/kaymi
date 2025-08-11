@@ -136,7 +136,7 @@
         function drawLine(index1, index2, color = 'green') {
             const svg = document.getElementById('line-svg');
             const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            const center = 150; // Half of the container's width/height
+            const center = 50; // Half of the container's width/height
 
             const angle1 = -Math.PI / 2 - (index1 / numCheckboxes) * 2 * Math.PI;
             const x1 = center + Math.cos(angle1) * radius;
