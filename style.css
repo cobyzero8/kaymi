@@ -6,7 +6,7 @@ body {
     margin: 0;
     padding: 20px;
     background-color: #ffffff; /* Dark blue-black background */
-    color: #0c03bd; /* Light gray text */
+    color: #ffffff; /* Light gray text */
     display: flex;
     justify-content: center;
     align-items: center;
