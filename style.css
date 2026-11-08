@@ -1,196 +1,139 @@
-/* General Body Styles */
-@import url('https://fonts.googleapis.com/css2?family=arial:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
 body {
     font-family: 'Orbitron', sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #ffffff; /* Dark blue-black background */
-    color: #ffffff; /* Light gray text */
+    padding: 10px;
+    background-color: #090d16;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    touch-action: manipulation;
 }
 
-/* Main Container */
 .container {
-    width: 90%;
-    max-width: 800px;
-    margin: 20px auto;
-    background: rgba(244, 244, 244, 0.85); /* Semi-transparent dark background */
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(255, 0, 30, 0.5); /* Cyan glow */
-    text-align: center;
-    border: 1px solid rgba(193, 239, 8, 0.7);
-    backdrop-filter: blur(10px);
-}
-
-/* Header Image */
-.header {
-    margin-bottom: 25px;
-}
-
-.header img {
-    max-width: 80%;
-    height: auto;
-    filter: drop-shadow(0 0 15px rgba(4, 100, 234, 0.7)); /* Glowing effect for the image */
-}
-
-/* Circle Container for Checkboxes */
-.circle-container {
-    position: relative;
-    width: 320px;
-    height: 320px;
-    margin: 40px auto;
-    border: 3px solid #ffffff; /* Solid cyan border */
-    border-radius: 50%;
-    box-shadow: 0 0 5px #00ffff, inset 0 0 5px #00ffff;
-}
-
-/* SVG Line Styles */
-#line-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    pointer-events: none;
+    max-width: 440px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
+    text-align: center;
+    border: 1px solid rgba(56, 189, 248, 0.4);
 }
 
-/* Input Controls Section */
-.controls {
-    margin-top: 30px;
+.wake-status {
+    font-size: 0.75rem;
+    color: #4ade80;
+    margin-bottom: 5px;
+}
+
+/* Canvas Círculo de Viento */
+.canvas-wrapper {
+    position: relative;
+    width: 270px;
+    height: 270px;
+    margin: 5px auto;
+    touch-action: none;
+}
+
+canvas {
+    border-radius: 50%;
+    background: #030712;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    cursor: pointer;
+}
+
+/* Entradas de Datos: Distancia y Viento */
+.controls-grid {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    background-color: #1e293b;
+    border-radius: 12px;
+}
+
+.input-box {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 15px;
-    padding: 20px;
-    background-color: rgba(0, 83, 155, 0.975);
-    border-radius: 10px;
-    border: 1px solid #ddcf0b;
 }
 
-.controls label {
-    font-size: 1.2em;
+.input-box label {
+    font-size: 0.85em;
     font-weight: 700;
-    color: #e4f1f1; /* Cyan text */
-    text-shadow: 0 0 5px #12a6a6;
+    color: #38bdf8;
+    margin-bottom: 4px;
 }
 
-.controls input[type="text"] {
-    padding: 10px 15px;
-    border: 2px solid #011010;
+.input-box input[type="number"] {
+    padding: 8px;
+    border: 2px solid #38bdf8;
     border-radius: 8px;
-    font-size: 1em;
-    width: 120px;
-    background-color: #e9e9ee;
-    color: #140202;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.controls input[type="text"]:focus {
-    border-color: #6f15b4; /* Cyan focus color */
-    box-shadow: 0 0 10px #b20bbd;
-    outline: none;
-}
-
-/* Reset Button */
-#reset-button {
-    padding: 10px 20px;
-    font-size: 1em;
+    font-size: 1.2em;
+    width: 80px;
+    background-color: #0f172a;
+    color: #ffffff;
+    text-align: center;
     font-weight: bold;
-    color: #eeeef0;
-    background-color: #0a0a0a; /* Cyan button */
+}
+
+#reset-button {
+    grid-column: span 2;
+    padding: 8px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #ef4444;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-    text-shadow: 0 0 3px #000;
+    transition: transform 0.1s;
 }
 
-#reset-button:hover {
-    background-color: #fafcfc;
-    color: #0a0a1a;
-    box-shadow: 0 0 15px #eff2f2;
-    transform: translateY(-2px);
+#reset-button:active {
+    transform: scale(0.95);
 }
 
-/* Result Display */
-#result-display {
-    margin-top: 30px;
-    padding: 20px;
-    font-size: 3.5em;
-    font-weight: 700;
-    color: #ffffff; /* Cyan for result */
-    background-color: rgba(14, 115, 222, 0.5);
+/* TARJETAS DE RESULTADO PRINCIPAL */
+.results-box {
+    margin-top: 12px;
+    padding: 12px;
+    background: #0284c7;
+    border-radius: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.res-card {
+    background: #0f172a;
+    padding: 10px 5px;
     border-radius: 10px;
-    min-height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.3s;
-    border: 2px solid #0f6fe3f9;
-    text-shadow: 0 0 10px #00ffff;
+    border: 1px solid #38bdf8;
 }
 
-/* Bottom Image */
+.res-title {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.res-value {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #facc15; /* Amarillo de alto impacto */
+    margin-top: 2px;
+}
+
 .bottom-image img {
-    max-width: 60%;
+    max-width: 100%;
     height: auto;
-    margin-top: 30px;
-    opacity: 0.8;
-    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
-
-    .container {
-        width: 95%;
-        padding: 20px;
-    }
-
-    .circle-container {
-        width: 280px;
-        height: 280px;
-        margin: 20px auto;
-    }
-
-    .controls {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    #result-display {
-        font-size: 2.5em;
-    }
-
-    .header img,
-    .bottom-image img {
-        max-width: 80%;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 15px;
-    }
-    
-    .circle-container {
-        width: 220px;
-        height: 220px;
-    }
-
-    #result-display {
-        font-size: 2em;
-    }
-
-    .controls input[type="text"] {
-        width: 100px;
-    }
+    margin-top: 10px;
+    border-radius: 8px;
+    opacity: 0.75;
 }
