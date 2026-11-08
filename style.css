@@ -14,61 +14,54 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 15px 10px;
+    padding: 10px;
 }
 
 .container {
     width: 100%;
-    max-width: 440px;
+    max-width: 420px;
     background: rgba(15, 23, 42, 0.95);
-    padding: 20px;
+    padding: 16px;
     border-radius: 20px;
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
     text-align: center;
     border: 1px solid rgba(56, 189, 248, 0.4);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .wake-status {
     font-size: 0.75rem;
     color: #4ade80;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
-/* Envoltorio Responsive del Canvas */
-.canvas-wrapper {
-    position: relative;
+/* Círculo SVG que encaja perfecto siempre */
+.circle-box {
     width: 100%;
-    max-width: 320px;
-    aspect-ratio: 1 / 1;
-    margin: 5px auto 15px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-width: 310px;
+    margin: 0 auto 10px auto;
 }
 
-canvas {
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 50%;
+#windSvg {
+    width: 100%;
+    height: auto;
+    display: block;
     background: #030712;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+    border-radius: 50%;
     cursor: pointer;
     touch-action: none;
-    display: block;
+    user-select: none;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
 }
 
 .controls-grid {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 12px;
+    gap: 10px;
+    padding: 10px;
     background-color: #1e293b;
     border-radius: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .input-box {
@@ -106,7 +99,6 @@ canvas {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.1s;
 }
 
 #reset-button:active {
@@ -115,18 +107,18 @@ canvas {
 
 .results-box {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     background: #0284c7;
     border-radius: 14px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .res-card {
     background: #0f172a;
-    padding: 10px 5px;
+    padding: 8px 4px;
     border-radius: 10px;
     border: 1px solid #38bdf8;
 }
@@ -134,11 +126,10 @@ canvas {
 .res-title {
     font-size: 0.65rem;
     color: #94a3b8;
-    text-transform: uppercase;
 }
 
 .res-value {
-    font-size: 2rem;
+    font-size: 1.9rem;
     font-weight: 900;
     color: #facc15;
     margin-top: 2px;
@@ -146,7 +137,7 @@ canvas {
 
 .bottom-image {
     width: 100%;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .bottom-image img {
