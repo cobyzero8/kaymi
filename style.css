@@ -1,23 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Orbitron', sans-serif;
     margin: 0;
-    padding: 10px;
+    padding: 20px 10px;
     background-color: #090d16;
     color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    touch-action: manipulation;
 }
 
+/* Compatible tanto en Laptop como Móvil */
 .container {
     width: 100%;
-    max-width: 440px;
+    max-width: 480px;
+    margin: 0 auto;
     background: rgba(15, 23, 42, 0.95);
-    padding: 15px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
     text-align: center;
@@ -27,16 +32,18 @@ body {
 .wake-status {
     font-size: 0.75rem;
     color: #4ade80;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
-/* Canvas Círculo de Viento */
+/* Canvas del Círculo de Viento */
 .canvas-wrapper {
     position: relative;
-    width: 270px;
-    height: 270px;
-    margin: 5px auto;
-    touch-action: none;
+    width: 340px;
+    height: 340px;
+    margin: 10px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 canvas {
@@ -44,15 +51,16 @@ canvas {
     background: #030712;
     box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
     cursor: pointer;
+    touch-action: none;
 }
 
-/* Entradas de Datos: Distancia y Viento */
+/* Entradas de Datos */
 .controls-grid {
-    margin-top: 10px;
+    margin-top: 15px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 10px;
+    gap: 12px;
+    padding: 12px;
     background-color: #1e293b;
     border-radius: 12px;
 }
@@ -64,7 +72,7 @@ canvas {
 }
 
 .input-box label {
-    font-size: 0.85em;
+    font-size: 0.8em;
     font-weight: 700;
     color: #38bdf8;
     margin-bottom: 4px;
@@ -75,7 +83,7 @@ canvas {
     border: 2px solid #38bdf8;
     border-radius: 8px;
     font-size: 1.2em;
-    width: 80px;
+    width: 90px;
     background-color: #0f172a;
     color: #ffffff;
     text-align: center;
@@ -84,8 +92,8 @@ canvas {
 
 #reset-button {
     grid-column: span 2;
-    padding: 8px;
-    font-size: 0.9em;
+    padding: 10px;
+    font-size: 0.95em;
     font-weight: bold;
     color: #ffffff;
     background-color: #ef4444;
@@ -99,9 +107,9 @@ canvas {
     transform: scale(0.95);
 }
 
-/* TARJETAS DE RESULTADO PRINCIPAL */
+/* Tarjetas de Resultado */
 .results-box {
-    margin-top: 12px;
+    margin-top: 15px;
     padding: 12px;
     background: #0284c7;
     border-radius: 14px;
@@ -126,14 +134,14 @@ canvas {
 .res-value {
     font-size: 2.2rem;
     font-weight: 900;
-    color: #facc15; /* Amarillo de alto impacto */
+    color: #facc15;
     margin-top: 2px;
 }
 
 .bottom-image img {
     max-width: 100%;
     height: auto;
-    margin-top: 10px;
+    margin-top: 12px;
     border-radius: 8px;
-    opacity: 0.75;
+    opacity: 0.85;
 }
