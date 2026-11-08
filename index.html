@@ -11,12 +11,24 @@
     <div class="container">
         <div class="wake-status" id="wakeStatus">🔒 Pantalla encendida continuamente</div>
 
-        <!-- Círculo de Viento Responsive -->
-        <div class="canvas-wrapper">
-            <canvas id="windCanvas"></canvas>
+        <!-- Círculo SVG Vectorial 100% Adaptable sin deformación -->
+        <div class="circle-box">
+            <svg id="windSvg" viewBox="0 0 340 340">
+                <!-- Anillo Exterior -->
+                <circle cx="170" cy="170" r="105" stroke="#38bdf8" stroke-width="4" fill="none" />
+                <!-- Fondo transparente para clicks -->
+                <circle cx="170" cy="170" r="140" fill="transparent" />
+                <!-- Grupo para marcas de reloj -->
+                <g id="clockTicks"></g>
+                <!-- Flecha de viento -->
+                <line id="windArrow" x1="170" y1="170" x2="170" y2="65" stroke="#facc15" stroke-width="4" style="display:none;" />
+                <circle id="windCenter" cx="170" cy="170" r="6" fill="#facc15" style="display:none;" />
+                <!-- Grupo para las 32 posiciones y textos -->
+                <g id="nodesGroup"></g>
+            </svg>
         </div>
 
-        <!-- Panel de Entradas de Datos -->
+        <!-- Entradas de Datos -->
         <div class="controls-grid">
             <div class="input-box">
                 <label for="distancia">DISTANCIA (0-25)</label>
@@ -29,7 +41,7 @@
             <button id="reset-button">RESET</button>
         </div>
 
-        <!-- PANEL DE RESPUESTAS EN TIEMPO REAL -->
+        <!-- Panel de Resultados -->
         <div class="results-box">
             <div class="res-card">
                 <div class="res-title">PONER ÁNGULO</div>
