@@ -11,25 +11,25 @@
     <div class="container">
         <div class="wake-status" id="wakeStatus">🔒 Pantalla encendida continuamente</div>
 
-        <!-- Anillo Táctil / HUD Estilo Reloj -->
+        <!-- Círculo de Viento Responsive -->
         <div class="canvas-wrapper">
-            <canvas id="windCanvas" width="340" height="340"></canvas>
+            <canvas id="windCanvas" width="400" height="400"></canvas>
         </div>
 
         <!-- Panel de Entradas de Datos -->
         <div class="controls-grid">
             <div class="input-box">
-                <label for="distancia">DISTANCIA (0-25):</label>
+                <label for="distancia">DISTANCIA (0-25)</label>
                 <input type="number" id="distancia" placeholder="10" min="0" max="25" inputmode="numeric">
             </div>
             <div class="input-box">
-                <label for="viento">VIENTO:</label>
+                <label for="viento">VIENTO</label>
                 <input type="number" id="viento" placeholder="0" min="0" max="60" inputmode="numeric">
             </div>
             <button id="reset-button">RESET</button>
         </div>
 
-        <!-- PANEL DE RESPUESTA EN TIEMPO REAL -->
+        <!-- PANEL DE RESPUESTAS EN TIEMPO REAL -->
         <div class="results-box">
             <div class="res-card">
                 <div class="res-title">PONER ÁNGULO</div>
