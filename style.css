@@ -1,148 +1,205 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
+document.addEventListener('DOMContentLoaded', () => {
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    // 1. MANTEER PANTALLA ENCENDIDA (Wake Lock API)
+    let wakeLock = null;
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+                document.getElementById('wakeStatus').innerText = '🔒 Pantalla encendida continuamente';
+            }
+        } catch (err) {}
+    }
+    requestWakeLock();
 
-body {
-    font-family: 'Orbitron', sans-serif;
-    background-color: #090d16;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 10px;
-}
+    document.addEventListener('visibilitychange', async () => {
+        if (wakeLock !== null && document.visibilityState === 'visible') {
+            await requestWakeLock();
+        }
+    });
 
-.container {
-    width: 100%;
-    max-width: 420px;
-    background: rgba(15, 23, 42, 0.95);
-    padding: 16px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
-    text-align: center;
-    border: 1px solid rgba(56, 189, 248, 0.4);
-}
+    // 2. TABLA OFICIAL REGLA DE 20 -> BARRA
+    const tablaRegla20 = {
+        1: 0.31, 2: 0.57, 3: 0.83, 4: 1.09, 5: 1.35,
+        6: 1.46, 7: 1.57, 8: 1.68, 9: 1.79, 10: 1.90,
+        11: 1.98, 12: 2.06, 13: 2.14, 14: 2.22, 15: 2.30,
+        16: 2.38, 17: 2.46, 18: 2.54, 19: 2.62, 20: 2.70,
+        21: 2.76, 22: 2.82, 23: 2.88, 24: 2.94, 25: 3.00,
+        26: 3.06, 27: 3.12, 28: 3.18, 29: 3.24, 30: 3.00,
+        31: 3.36, 32: 3.42, 33: 3.48, 34: 3.54, 35: 3.60,
+        36: 3.66, 37: 3.72, 38: 3.78, 39: 3.84, 40: 3.90
+    };
 
-.wake-status {
-    font-size: 0.75rem;
-    color: #4ade80;
-    margin-bottom: 8px;
-}
+    // 3. GENERACIÓN DEL SVG
+    const svg = document.getElementById('windSvg');
+    const clockTicks = document.getElementById('clockTicks');
+    const nodesGroup = document.getElementById('nodesGroup');
+    const windArrow = document.getElementById('windArrow');
+    const windCenter = document.getElementById('windCenter');
+    const vientoInput = document.getElementById('viento');
+    const distanciaInput = document.getElementById('distancia');
+    const resetButton = document.getElementById('reset-button');
 
-/* Círculo SVG que encaja perfecto siempre */
-.circle-box {
-    width: 100%;
-    max-width: 310px;
-    margin: 0 auto 10px auto;
-}
+    const centerX = 170;
+    const centerY = 170;
+    const radius = 105;
+    const labelRadius = 138;
+    const numCheckboxes = 32;
 
-#windSvg {
-    width: 100%;
-    height: auto;
-    display: block;
-    background: #030712;
-    border-radius: 50%;
-    cursor: pointer;
-    touch-action: none;
-    user-select: none;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-}
+    const checkboxValues = [
+        0.2, 0.1, 0.1, 0.18, 0.28, 0.45, 0.5, 0.6,
+        0.67, 0.65, 0.6, 0.6, 0.6, 0.55, 0.5, 0.25,
+        0.2, 0.15, 0.5, 0.15, 0.25, 0.35, 0.5, 0.6,
+        0.68, 0.7, 0.7, 0.7, 0.68, 0.6, 0.5, 0.35
+    ];
 
-.controls-grid {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 10px;
-    background-color: #1e293b;
-    border-radius: 12px;
-    margin-bottom: 12px;
-}
+    const specialIndices = [0, 4, 8, 12, 16, 20, 24, 28];
+    const blueIndices = [1, 18];
 
-.input-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    let selectedIndex = -1;
 
-.input-box label {
-    font-size: 0.75em;
-    font-weight: 700;
-    color: #38bdf8;
-    margin-bottom: 4px;
-}
+    // Dibujar marcas del reloj (12 divisiones)
+    for (let i = 0; i < 12; i++) {
+        const angle = (i * 30) * Math.PI / 180;
+        const x1 = centerX + (radius - 12) * Math.cos(angle);
+        const y1 = centerY + (radius - 12) * Math.sin(angle);
+        const x2 = centerX + radius * Math.cos(angle);
+        const y2 = centerY + radius * Math.sin(angle);
 
-.input-box input[type="number"] {
-    padding: 8px;
-    border: 2px solid #38bdf8;
-    border-radius: 8px;
-    font-size: 1.2em;
-    width: 85px;
-    background-color: #0f172a;
-    color: #ffffff;
-    text-align: center;
-    font-weight: bold;
-}
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        line.setAttribute('stroke', '#22c55e');
+        line.setAttribute('stroke-width', '3');
+        clockTicks.appendChild(line);
+    }
 
-#reset-button {
-    grid-column: span 2;
-    padding: 10px;
-    font-size: 0.9em;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #ef4444;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
+    // Dibujar los 32 puntos y valores alrededor
+    for (let i = 0; i < 32; i++) {
+        const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
+        const cx = centerX + Math.cos(angle) * radius;
+        const cy = centerY + Math.sin(angle) * radius;
 
-#reset-button:active {
-    transform: scale(0.95);
-}
+        // Punto
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', '4');
+        circle.setAttribute('id', `node-${i}`);
+        circle.setAttribute('fill', specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff'));
+        nodesGroup.appendChild(circle);
 
-.results-box {
-    width: 100%;
-    padding: 10px;
-    background: #0284c7;
-    border-radius: 14px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 12px;
-}
+        // Texto
+        const lx = centerX + Math.cos(angle) * labelRadius;
+        const ly = centerY + Math.sin(angle) * labelRadius;
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', lx);
+        text.setAttribute('y', ly);
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'central');
+        text.setAttribute('font-size', '10');
+        text.setAttribute('font-family', 'Orbitron');
+        text.setAttribute('fill', specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#e2e8f0'));
+        text.textContent = checkboxValues[i];
+        nodesGroup.appendChild(text);
+    }
 
-.res-card {
-    background: #0f172a;
-    padding: 8px 4px;
-    border-radius: 10px;
-    border: 1px solid #38bdf8;
-}
+    // Eventos de selección táctil / clic en el SVG
+    function handleTouch(e) {
+        const rect = svg.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-.res-title {
-    font-size: 0.65rem;
-    color: #94a3b8;
-}
+        const pt = svg.createSVGPoint();
+        pt.x = clientX;
+        pt.y = clientY;
+        const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
 
-.res-value {
-    font-size: 1.9rem;
-    font-weight: 900;
-    color: #facc15;
-    margin-top: 2px;
-}
+        const dx = svgP.x - centerX;
+        const dy = svgP.y - centerY;
 
-.bottom-image {
-    width: 100%;
-    margin-top: 6px;
-}
+        let angle = Math.atan2(dy, dx);
+        let normalizedAngle = -Math.PI / 2 - angle;
+        while (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
 
-.bottom-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    opacity: 0.85;
-}
+        selectedIndex = Math.round((normalizedAngle / (2 * Math.PI)) * numCheckboxes) % numCheckboxes;
+
+        // Actualizar visualización de aguja y selección
+        const arrowX = centerX + (radius - 15) * Math.cos(angle);
+        const arrowY = centerY + (radius - 15) * Math.sin(angle);
+        windArrow.setAttribute('x2', arrowX);
+        windArrow.setAttribute('y2', arrowY);
+        windArrow.style.display = 'block';
+        windCenter.style.display = 'block';
+
+        // Resaltar punto seleccionado
+        for (let i = 0; i < 32; i++) {
+            const node = document.getElementById(`node-${i}`);
+            if (i === selectedIndex) {
+                node.setAttribute('r', '7');
+                node.setAttribute('fill', '#facc15');
+            } else {
+                node.setAttribute('r', '4');
+                node.setAttribute('fill', specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff'));
+            }
+        }
+
+        calculateResult();
+    }
+
+    let isDragging = false;
+    svg.addEventListener('mousedown', (e) => { isDragging = true; handleTouch(e); });
+    svg.addEventListener('mousemove', (e) => { if (isDragging) handleTouch(e); });
+    svg.addEventListener('mouseup', () => { isDragging = false; });
+    svg.addEventListener('touchstart', (e) => { isDragging = true; handleTouch(e); }, { passive: true });
+    svg.addEventListener('touchmove', (e) => { if (isDragging) handleTouch(e); }, { passive: true });
+    svg.addEventListener('touchend', () => { isDragging = false; });
+
+    // 4. CÁLCULO
+    function calculateResult() {
+        const vientoValue = parseFloat(vientoInput.value);
+        const distValue = parseInt(distanciaInput.value);
+
+        if (selectedIndex !== -1 && !isNaN(vientoValue) && vientoInput.value.trim() !== '') {
+            const checkboxNum = selectedIndex + 1;
+            const checkboxValue = checkboxValues[selectedIndex];
+            let angleResult = checkboxValue * vientoValue;
+
+            const decrementGroup = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+            if (decrementGroup.includes(checkboxNum)) {
+                angleResult = 70 - angleResult;
+            } else {
+                angleResult = angleResult + 70;
+            }
+            document.getElementById('dispAngle').innerText = `${angleResult.toFixed(1)}°`;
+        } else {
+            document.getElementById('dispAngle').innerText = '--°';
+        }
+
+        if (!isNaN(distValue) && distValue > 0) {
+            const power = tablaRegla20[distValue] || '--';
+            document.getElementById('dispPower').innerText = power;
+        } else {
+            document.getElementById('dispPower').innerText = '--';
+        }
+    }
+
+    vientoInput.addEventListener('input', calculateResult);
+    distanciaInput.addEventListener('input', calculateResult);
+
+    resetButton.addEventListener('click', () => {
+        selectedIndex = -1;
+        vientoInput.value = '';
+        distanciaInput.value = '';
+        windArrow.style.display = 'none';
+        windCenter.style.display = 'none';
+        for (let i = 0; i < 32; i++) {
+            const node = document.getElementById(`node-${i}`);
+            node.setAttribute('r', '4');
+            node.setAttribute('fill', specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff'));
+        }
+        calculateResult();
+    });
+});
