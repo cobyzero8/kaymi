@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. MANTEER PANTALLA ENCENDIDA (Wake Lock API)
+    // 1. PANTALLA ENCENDIDA (Wake Lock API)
     let wakeLock = null;
     async function requestWakeLock() {
         try {
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 2. TABLA OFICIAL: DISTANCIA (1 a 40) DE LA REGLA DE 20 -> FUERZA EN BARRA
+    // 2. TABLA OFICIAL: REGLA DE 20 -> FUERZA EN BARRA
     const tablaRegla20 = {
         1: 0.31, 2: 0.57, 3: 0.83, 4: 1.09, 5: 1.35,
         6: 1.46, 7: 1.57, 8: 1.68, 9: 1.79, 10: 1.90,
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         36: 3.66, 37: 3.72, 38: 3.78, 39: 3.84, 40: 3.90
     };
 
-    // 3. CÍRCULO TÁCTIL (32 POSICIONES Y FACTORES)
+    // 3. CÍRCULO CON RELOJ DE 12 DIVISIONES Y 32 POSICIONES
     const canvas = document.getElementById('windCanvas');
     const ctx = canvas.getContext('2d');
     const vientoInput = document.getElementById('viento');
@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const radius = 85;
-    const labelRadius = 112;
+    const radius = 105;
+    const labelRadius = 138;
     const numCheckboxes = 32;
 
     const checkboxValues = [
@@ -59,21 +59,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawHUD() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Anillo base
+        // Anillo exterior estilo HUD del juego
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = '#84cc16';
-        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 6;
         ctx.stroke();
 
-        // Puntos y Factores
+        // Dibujar las 12 marcas de un reloj tradicional
+        for (let i = 0; i < 12; i++) {
+            const clockAngle = (i * 30) * Math.PI / 180;
+            const x1 = centerX + (radius - 12) * Math.cos(clockAngle);
+            const y1 = centerY + (radius - 12) * Math.sin(clockAngle);
+            const x2 = centerX + radius * Math.cos(clockAngle);
+            const y2 = centerY + radius * Math.sin(clockAngle);
+
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = '#22c55e';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+
+        // Dibujar los 32 puntos y sus números alrededor del reloj
         for (let i = 0; i < 32; i++) {
             const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
             const xCheck = centerX + Math.cos(angle) * radius;
             const yCheck = centerY + Math.sin(angle) * radius;
 
             ctx.beginPath();
-            ctx.arc(xCheck, yCheck, i === selectedIndex ? 7 : 3.5, 0, 2 * Math.PI);
+            ctx.arc(xCheck, yCheck, i === selectedIndex ? 7 : 4, 0, 2 * Math.PI);
             ctx.fillStyle = i === selectedIndex ? '#facc15' : (specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff'));
             ctx.fill();
 
@@ -86,14 +102,19 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText(checkboxValues[i], xLabel, yLabel);
         }
 
-        // Aguja de Viento
+        // Flecha indicadora de dirección
         if (selectedIndex !== -1) {
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
-            ctx.lineTo(centerX + (radius - 10) * Math.cos(currentAngle), centerY + (radius - 10) * Math.sin(currentAngle));
+            ctx.lineTo(centerX + (radius - 15) * Math.cos(currentAngle), centerY + (radius - 15) * Math.sin(currentAngle));
             ctx.strokeStyle = '#facc15';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 4;
             ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#facc15';
+            ctx.fill();
         }
 
         calculateResult();
@@ -112,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let normalizedAngle = -Math.PI / 2 - angle;
         while (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
-        
+
         selectedIndex = Math.round((normalizedAngle / (2 * Math.PI)) * numCheckboxes) % numCheckboxes;
         drawHUD();
     }
@@ -125,12 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener('touchmove', (e) => { if (isDragging) handleTouch(e); }, { passive: true });
     canvas.addEventListener('touchend', () => { isDragging = false; });
 
-    // 4. LÓGICA DE TIRO AUTOMÁTICO
+    // 4. CÁLCULO DE RESULTADOS
     function calculateResult() {
         const vientoValue = parseFloat(vientoInput.value);
         const distValue = parseInt(distanciaInput.value);
 
-        // Cálculo del Ángulo (Fórmula original +70 / -70)
         if (selectedIndex !== -1 && !isNaN(vientoValue) && vientoInput.value.trim() !== '') {
             const checkboxNum = selectedIndex + 1;
             const checkboxValue = checkboxValues[selectedIndex];
@@ -147,7 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('dispAngle').innerText = '--°';
         }
 
-        // Cálculo de la Fuerza en Barra (Desde la Distancia ingresada)
         if (!isNaN(distValue) && distValue > 0) {
             const power = tablaRegla20[distValue] || '--';
             document.getElementById('dispPower').innerText = power;
