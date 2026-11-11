@@ -21,14 +21,14 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            padding: 8px;
+            padding: 6px;
         }
 
         .container {
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
             background: rgba(15, 23, 42, 0.98);
-            padding: 12px;
+            padding: 10px;
             border-radius: 18px;
             box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
             text-align: center;
@@ -36,7 +36,7 @@
         }
 
         .wake-status {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #4ade80;
             margin-bottom: 6px;
         }
@@ -50,17 +50,17 @@
             border-radius: 8px;
             font-size: 0.78rem;
             font-weight: 900;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .leg-contra { color: #f87171; }
         .leg-favor { color: #38bdf8; }
 
-        /* Reloj a ancho completo y gigante */
+        /* Reloj gigante ocupando todo el ancho disponible */
         .circle-box {
             width: 100%;
-            max-width: 360px;
-            margin: 0 auto 10px auto;
+            max-width: 420px;
+            margin: 0 auto 8px auto;
         }
 
         #windSvg {
@@ -221,29 +221,29 @@
             <span class="leg-favor">🔵 DER: FAVOR (+70)</span>
         </div>
 
-        <!-- Círculo Gigante a Ancho Completo -->
+        <!-- Círculo Gigante con Puntos Grandes y Números Discretos -->
         <div class="circle-box">
             <svg id="windSvg" viewBox="0 0 360 360">
                 <!-- Mitad Izquierda Roja (En Contra) -->
-                <path d="M 180 65 A 115 115 0 0 0 180 295 Z" fill="rgba(239, 68, 68, 0.18)" />
+                <path d="M 180 42 A 138 138 0 0 0 180 318 Z" fill="rgba(239, 68, 68, 0.18)" />
                 <!-- Mitad Derecha Celeste (A Favor) -->
-                <path d="M 180 65 A 115 115 0 0 1 180 295 Z" fill="rgba(56, 189, 248, 0.18)" />
+                <path d="M 180 42 A 138 138 0 0 1 180 318 Z" fill="rgba(56, 189, 248, 0.18)" />
 
-                <!-- Borde exterior -->
-                <circle cx="180" cy="180" r="115" stroke="#38bdf8" stroke-width="3" fill="none" />
-                <circle cx="180" cy="180" r="155" fill="transparent" />
+                <!-- Borde exterior ampliado -->
+                <circle cx="180" cy="180" r="138" stroke="#38bdf8" stroke-width="3" fill="none" />
+                <circle cx="180" cy="180" r="172" fill="transparent" />
 
                 <!-- Línea vertical divisoria central -->
-                <line x1="180" y1="15" x2="180" y2="345" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4" opacity="0.6" />
+                <line x1="180" y1="12" x2="180" y2="348" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4" opacity="0.6" />
 
-                <!-- Textos guía dentro de cada mitad -->
-                <text x="126" y="180" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="900" fill="rgba(248, 113, 113, 0.55)">CONTRA</text>
-                <text x="234" y="180" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="900" fill="rgba(56, 189, 248, 0.55)">FAVOR</text>
+                <!-- Textos guía desplazados abajo para no estorbar las horas 9 y 3 -->
+                <text x="125" y="212" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(248, 113, 113, 0.45)">CONTRA</text>
+                <text x="235" y="212" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(56, 189, 248, 0.45)">FAVOR</text>
 
                 <g id="originalCrossLines"></g>
                 <g id="clockTicks"></g>
-                <line id="windArrow" x1="180" y1="180" x2="180" y2="65" stroke="#facc15" stroke-width="4.5" style="display:none;" />
-                <circle id="windCenter" cx="180" cy="180" r="7" fill="#facc15" style="display:none;" />
+                <line id="windArrow" x1="180" y1="180" x2="180" y2="42" stroke="#facc15" stroke-width="5" style="display:none;" />
+                <circle id="windCenter" cx="180" cy="180" r="8" fill="#facc15" style="display:none;" />
                 <g id="nodesGroup"></g>
             </svg>
         </div>
@@ -273,7 +273,7 @@
             </div>
         </div>
 
-        <!-- Cuadros Tácticos Inferiores Bien Grandes -->
+        <!-- Cuadros Tácticos Inferiores -->
         <div class="tips-grid">
             <div class="side-card">
                 <div class="side-card-title">TERRENO</div>
@@ -340,8 +340,8 @@
             const distanciaInput = document.getElementById('distancia');
             const resetButton = document.getElementById('reset-button');
 
-            // Radio ampliado a 360x360 para máxima legibilidad en móvil
-            const centerX = 180, centerY = 180, radius = 115, labelRadius = 152, numCheckboxes = 32;
+            // Círculo mucho más grande (radius = 138) y números pegados (labelRadius = 160)
+            const centerX = 180, centerY = 180, radius = 138, labelRadius = 160, numCheckboxes = 32;
 
             const checkboxValues = [
                 0.2, 0.1, 0.1, 0.18, 0.28, 0.45, 0.5, 0.6,
@@ -362,7 +362,7 @@
                 line.setAttribute('y1', centerY + Math.sin(a1) * radius);
                 line.setAttribute('x2', centerX + Math.cos(a2) * radius);
                 line.setAttribute('y2', centerY + Math.sin(a2) * radius);
-                line.setAttribute('stroke', 'rgba(255, 255, 255, 0.15)');
+                line.setAttribute('stroke', 'rgba(255, 255, 255, 0.14)');
                 line.setAttribute('stroke-width', '1.5');
                 originalCrossLines.appendChild(line);
             }
@@ -371,38 +371,40 @@
             drawOriginalLine(8, 24);
             drawOriginalLine(12, 28);
 
-            // Marcas de las 12 horas más grandes
+            // Marcas de las 12 horas del reloj moderno
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30 - 90) * Math.PI / 180;
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', centerX + (radius - 16) * Math.cos(angle));
-                line.setAttribute('y1', centerY + (radius - 16) * Math.sin(angle));
+                line.setAttribute('x1', centerX + (radius - 18) * Math.cos(angle));
+                line.setAttribute('y1', centerY + (radius - 18) * Math.sin(angle));
                 line.setAttribute('x2', centerX + radius * Math.cos(angle));
                 line.setAttribute('y2', centerY + radius * Math.sin(angle));
                 line.setAttribute('stroke', '#22c55e');
-                line.setAttribute('stroke-width', i % 3 === 0 ? '4' : '2.5');
+                line.setAttribute('stroke-width', i % 3 === 0 ? '4.5' : '2.8');
                 clockTicks.appendChild(line);
 
                 const hourNum = i === 0 ? 12 : i;
                 const hText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                hText.setAttribute('x', centerX + (radius - 28) * Math.cos(angle));
-                hText.setAttribute('y', centerY + (radius - 28) * Math.sin(angle));
+                hText.setAttribute('x', centerX + (radius - 32) * Math.cos(angle));
+                hText.setAttribute('y', centerY + (radius - 32) * Math.sin(angle));
                 hText.setAttribute('text-anchor', 'middle');
                 hText.setAttribute('dominant-baseline', 'central');
-                hText.setAttribute('font-size', '11');
+                hText.setAttribute('font-size', '12');
                 hText.setAttribute('font-weight', 'bold');
-                hText.setAttribute('fill', '#cbd5e1');
+                hText.setAttribute('fill', '#e2e8f0');
                 hText.textContent = hourNum;
                 clockTicks.appendChild(hText);
             }
 
-            // 32 nodos y números exteriores grandes (12.5px)
+            // 32 puntos grandes (6.5px) y números exteriores pequeños/sutiles (8.5px)
             for (let i = 0; i < 32; i++) {
                 const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 circle.setAttribute('cx', centerX + Math.cos(angle) * radius);
                 circle.setAttribute('cy', centerY + Math.sin(angle) * radius);
-                circle.setAttribute('r', '4.5');
+                circle.setAttribute('r', '6.5');
+                circle.setAttribute('stroke', '#030712');
+                circle.setAttribute('stroke-width', '1.5');
                 circle.setAttribute('id', `node-${i}`);
                 circle.setAttribute('fill', specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff'));
                 nodesGroup.appendChild(circle);
@@ -412,10 +414,11 @@
                 text.setAttribute('y', centerY + Math.sin(angle) * labelRadius);
                 text.setAttribute('text-anchor', 'middle');
                 text.setAttribute('dominant-baseline', 'central');
-                text.setAttribute('font-size', '12.5');
-                text.setAttribute('font-weight', '700');
+                text.setAttribute('font-size', '8.5');
+                text.setAttribute('font-weight', '500');
                 text.setAttribute('font-family', 'Orbitron');
-                text.setAttribute('fill', specialIndices.includes(i) ? '#f87171' : (blueIndices.includes(i) ? '#60a5fa' : '#f1f5f9'));
+                text.setAttribute('opacity', '0.75');
+                text.setAttribute('fill', specialIndices.includes(i) ? '#f87171' : (blueIndices.includes(i) ? '#60a5fa' : '#94a3b8'));
                 text.textContent = checkboxValues[i];
                 nodesGroup.appendChild(text);
             }
@@ -432,13 +435,13 @@
                 while (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
                 selectedIndex = Math.round((normalizedAngle / (2 * Math.PI)) * numCheckboxes) % numCheckboxes;
 
-                windArrow.setAttribute('x2', centerX + (radius - 16) * Math.cos(angle));
-                windArrow.setAttribute('y2', centerY + (radius - 16) * Math.sin(angle));
+                windArrow.setAttribute('x2', centerX + (radius - 18) * Math.cos(angle));
+                windArrow.setAttribute('y2', centerY + (radius - 18) * Math.sin(angle));
                 windArrow.style.display = 'block'; windCenter.style.display = 'block';
 
                 for (let i = 0; i < 32; i++) {
                     const node = document.getElementById(`node-${i}`);
-                    node.setAttribute('r', i === selectedIndex ? '8' : '4.5');
+                    node.setAttribute('r', i === selectedIndex ? '10' : '6.5');
                     node.setAttribute('fill', i === selectedIndex ? '#facc15' : (specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff')));
                 }
                 calculateResult();
@@ -489,7 +492,7 @@
                 selectedIndex = -1; vientoInput.value = ''; distanciaInput.value = '';
                 windArrow.style.display = 'none'; windCenter.style.display = 'none';
                 for (let i = 0; i < 32; i++) {
-                    document.getElementById(`node-${i}`).setAttribute('r', '4.5');
+                    document.getElementById(`node-${i}`).setAttribute('r', '6.5');
                 }
                 calculateResult();
             });
