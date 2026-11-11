@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Grub - Coby (Regla 70/20)</title>
+    <title>Calculadora Grub RAPID - GunBound</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
@@ -12,11 +12,6 @@
         
         .container { width: 100%; max-width: 440px; background: rgba(15, 23, 42, 0.95); padding: 16px; border-radius: 20px; box-shadow: 0 0 25px rgba(56, 189, 248, 0.3); text-align: center; border: 1px solid rgba(56, 189, 248, 0.4); }
         .wake-status { font-size: 0.75rem; color: #4ade80; margin-bottom: 8px; }
-
-        /* Selector Adelante / Atrás */
-        .orient-box { display: flex; gap: 8px; margin-bottom: 10px; }
-        .orient-btn { flex: 1; padding: 10px; font-weight: bold; font-family: 'Orbitron'; border: 2px solid #38bdf8; border-radius: 8px; background: #0f172a; color: #94a3b8; cursor: pointer; transition: 0.2s; }
-        .orient-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
 
         .circle-box { width: 100%; max-width: 300px; margin: 0 auto 10px auto; }
         #windSvg { width: 100%; height: auto; display: block; background: #030712; border-radius: 50%; cursor: pointer; touch-action: none; user-select: none; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
@@ -41,16 +36,12 @@
     <div class="container">
         <div class="wake-status" id="wakeStatus">🔒 Pantalla encendida continuamente</div>
 
-        <!-- Botones para definir hacia dónde miras -->
-        <div class="orient-box">
-            <button class="orient-btn active" id="btnFrente" onclick="setOrientacion('frente')">DE FRENTE</button>
-            <button class="orient-btn" id="btnEspalda" onclick="setOrientacion('espalda')">DE ESPALDAS</button>
-        </div>
-
         <div class="circle-box">
             <svg id="windSvg" viewBox="0 0 340 340">
                 <circle cx="170" cy="170" r="105" stroke="#38bdf8" stroke-width="4" fill="none" />
                 <circle cx="170" cy="170" r="140" fill="transparent" />
+                <!-- Línea Divisoria Vertical (Mitad Izquierda en Contra / Mitad Derecha a Favor) -->
+                <line x1="170" y1="20" x2="170" y2="320" stroke="#0284c7" stroke-width="2" stroke-dasharray="4" />
                 <g id="clockTicks"></g>
                 <line id="windArrow" x1="170" y1="170" x2="170" y2="65" stroke="#facc15" stroke-width="4" style="display:none;" />
                 <circle id="windCenter" cx="170" cy="170" r="6" fill="#facc15" style="display:none;" />
@@ -72,7 +63,7 @@
 
         <div class="results-box">
             <div class="res-card">
-                <div class="res-title">ÁNGULO EXACTO</div>
+                <div class="res-title">PONER ÁNGULO</div>
                 <div class="res-value" id="dispAngle">--°</div>
             </div>
             <div class="res-card">
@@ -90,24 +81,15 @@
     </div>
 
     <script>
-        let orientacion = 'frente';
-
-        function setOrientacion(tipo) {
-            orientacion = tipo;
-            document.getElementById('btnFrente').classList.toggle('active', tipo === 'frente');
-            document.getElementById('btnEspalda').classList.toggle('active', tipo === 'espalda');
-            if (window.calculateResult) window.calculateResult();
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            // Wake Lock API
+            // Screen Wake Lock API para mantener pantalla activa
             let wakeLock = null;
             async function requestWakeLock() {
                 try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch (err) {}
             }
             requestWakeLock();
 
-            // Tabla oficial "Valores según la Regla de 20" (1 a 40)
+            // Mapeo estático oficial de "Valores según la Regla de 20" (1 a 40)
             const tablaRegla20 = {
                 1: 0.31, 2: 0.57, 3: 0.83, 4: 1.09, 5: 1.35,
                 6: 1.46, 7: 1.57, 8: 1.68, 9: 1.79, 10: 1.90,
@@ -130,7 +112,7 @@
 
             const centerX = 170, centerY = 170, radius = 105, labelRadius = 138, numCheckboxes = 32;
 
-            // Factores exactos de tu script original
+            // Factores exactos asignados a cada una de las 32 posiciones circulares
             const checkboxValues = [
                 0.2, 0.1, 0.1, 0.18, 0.28, 0.45, 0.5, 0.6,
                 0.67, 0.65, 0.6, 0.6, 0.6, 0.55, 0.5, 0.25,
@@ -142,7 +124,7 @@
             const blueIndices = [1, 18];
             let selectedIndex = -1;
 
-            // Dibujar 12 marcas de reloj
+            // Dibujar 12 marcas de reloj principales
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30) * Math.PI / 180;
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -155,7 +137,7 @@
                 clockTicks.appendChild(line);
             }
 
-            // Dibujar 32 posiciones
+            // Dibujar 32 casillas y sus etiquetas de factor
             for (let i = 0; i < 32; i++) {
                 const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -210,54 +192,50 @@
             svg.addEventListener('touchmove', (e) => { if (isDragging) handleTouch(e); }, { passive: true });
             svg.addEventListener('touchend', () => { isDragging = false; });
 
-            // Lógica exacta de tu script original + inversión de espaldas
-            window.calculateResult = function() {
+            // ALGORITMO ORIGINAL EXACTO DE TU PROYECTO
+            function calculateResult() {
                 const vientoValue = parseFloat(vientoInput.value);
                 const distValue = parseInt(distanciaInput.value);
 
                 if (selectedIndex !== -1 && !isNaN(vientoValue) && vientoInput.value.trim() !== '') {
-                    const checkboxNum = selectedIndex + 1;
+                    const checkboxNum = selectedIndex + 1; // Base 1 a 32
                     const checkboxValue = checkboxValues[selectedIndex];
                     let multResult = checkboxValue * vientoValue;
 
-                    // Grupo en contra de tu código original (casillas 3 a 18)
+                    // Hemisferio Izquierdo (Casillas 3 a 18): En Contra -> 70 - (Factor * Viento)
                     const decrementGroup = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-                    let isContra = decrementGroup.includes(checkboxNum);
-
-                    // Si estás disparando de ESPALDAS, la lógica del viento se invierte
-                    if (orientacion === 'espalda') {
-                        isContra = !isContra;
-                    }
-
                     let angleResult;
-                    if (isContra) {
+                    
+                    if (decrementGroup.includes(checkboxNum)) {
                         angleResult = 70 - multResult;
                     } else {
+                        // Hemisferio Derecho: A Favor -> 70 + (Factor * Viento)
                         angleResult = 70 + multResult;
                     }
+
                     document.getElementById('dispAngle').innerText = `${angleResult.toFixed(1)}°`;
                 } else {
                     document.getElementById('dispAngle').innerText = '--°';
                 }
 
-                // Obtener fuerza de la barra directamente de la tabla de distancias (1 a 40)
+                // Fuerza extraída directamente de la tabla "Valores según la Regla de 20"
                 if (!isNaN(distValue) && distValue > 0) {
                     const power = tablaRegla20[distValue] || '--';
                     document.getElementById('dispPower').innerText = power;
                 } else {
                     document.getElementById('dispPower').innerText = '--';
                 }
-            };
+            }
 
-            vientoInput.addEventListener('input', window.calculateResult);
-            distanciaInput.addEventListener('input', window.calculateResult);
+            vientoInput.addEventListener('input', calculateResult);
+            distanciaInput.addEventListener('input', calculateResult);
             resetButton.addEventListener('click', () => {
                 selectedIndex = -1; vientoInput.value = ''; distanciaInput.value = '';
                 windArrow.style.display = 'none'; windCenter.style.display = 'none';
                 for (let i = 0; i < 32; i++) {
                     document.getElementById(`node-${i}`).setAttribute('r', '4');
                 }
-                window.calculateResult();
+                calculateResult();
             });
         });
     </script>
