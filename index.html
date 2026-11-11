@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Táctica Grub - GunBound</title>
+    <title>Calculadora Grub PRO - Coby</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
@@ -21,14 +21,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 10px;
+            padding: 8px;
         }
 
         .container {
             width: 100%;
-            max-width: 440px;
+            max-width: 520px;
             background: rgba(15, 23, 42, 0.95);
-            padding: 16px;
+            padding: 14px;
             border-radius: 20px;
             box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
             text-align: center;
@@ -36,16 +36,87 @@
         }
 
         .wake-status {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #4ade80;
+            margin-bottom: 6px;
+        }
+
+        /* Leyenda rápida de colores arriba del reloj */
+        .color-legend {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 0.68rem;
+            font-weight: 700;
             margin-bottom: 8px;
         }
 
-        /* Contenedor SVG */
+        .leg-contra {
+            color: #f87171;
+        }
+
+        .leg-favor {
+            color: #38bdf8;
+        }
+
+        /* Sección Central: Cuadro Izquierdo + Círculo SVG + Cuadro Derecho */
+        .radar-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .side-card {
+            flex: 1;
+            min-width: 75px;
+            max-width: 98px;
+            background: #1e293b;
+            border: 1px solid #38bdf8;
+            border-radius: 10px;
+            padding: 8px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.58rem;
+            line-height: 1.25;
+        }
+
+        .side-card-title {
+            color: #38bdf8;
+            font-weight: 900;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+            padding-bottom: 4px;
+            font-size: 0.62rem;
+        }
+
+        .tip-item {
+            background: #0f172a;
+            padding: 5px 3px;
+            border-radius: 6px;
+        }
+
+        .tip-label {
+            color: #94a3b8;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .tip-val-plus {
+            color: #facc15;
+            font-weight: 700;
+        }
+
+        .tip-val-minus {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
         .circle-box {
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto 10px auto;
+            flex: 2.3;
+            max-width: 270px;
+            margin: 0 auto;
         }
 
         #windSvg {
@@ -89,7 +160,7 @@
             border: 2px solid #38bdf8;
             border-radius: 8px;
             font-size: 1.2em;
-            width: 85px;
+            width: 90px;
             background-color: #0f172a;
             color: #ffffff;
             text-align: center;
@@ -160,17 +231,67 @@
     <div class="container">
         <div class="wake-status" id="wakeStatus">🔒 Pantalla encendida continuamente</div>
 
-        <div class="circle-box">
-            <svg id="windSvg" viewBox="0 0 340 340">
-                <circle cx="170" cy="170" r="105" stroke="#38bdf8" stroke-width="4" fill="none" />
-                <circle cx="170" cy="170" r="140" fill="transparent" />
-                <!-- Divisorio vertical: Hemisferio Izquierdo (En Contra) / Hemisferio Derecho (A Favor) -->
-                <line x1="170" y1="20" x2="170" y2="320" stroke="#0284c7" stroke-width="2" stroke-dasharray="4" />
-                <g id="clockTicks"></g>
-                <line id="windArrow" x1="170" y1="170" x2="170" y2="65" stroke="#facc15" stroke-width="4" style="display:none;" />
-                <circle id="windCenter" cx="170" cy="170" r="6" fill="#facc15" style="display:none;" />
-                <g id="nodesGroup"></g>
-            </svg>
+        <!-- Leyenda visual rápida -->
+        <div class="color-legend">
+            <span class="leg-contra">🔴 IZQ: CONTRA (-70)</span>
+            <span class="leg-favor">🔵 DER: FAVOR (+70)</span>
+        </div>
+
+        <!-- Fila Principal: Cuadro Terreno + Reloj Bicolor + Cuadro Viento Fuerte -->
+        <div class="radar-wrapper">
+            <div class="side-card">
+                <div class="side-card-title">TERRENO</div>
+                <div class="tip-item">
+                    <span class="tip-label">⬆ SUBIDA</span>
+                    <span class="tip-val-plus">+0.15 Fuerza</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-label">⬇ BAJADA</span>
+                    <span class="tip-val-minus">-0.10 Fuerza</span>
+                </div>
+            </div>
+
+            <div class="circle-box">
+                <svg id="windSvg" viewBox="0 0 340 340">
+                    <!-- Mitad Izquierda Roja (En Contra) -->
+                    <path d="M 170 65 A 105 105 0 0 0 170 275 Z" fill="rgba(239, 68, 68, 0.16)" />
+                    <!-- Mitad Derecha Celeste (A Favor) -->
+                    <path d="M 170 65 A 105 105 0 0 1 170 275 Z" fill="rgba(56, 189, 248, 0.16)" />
+
+                    <!-- Borde exterior -->
+                    <circle cx="170" cy="170" r="105" stroke="#38bdf8" stroke-width="3" fill="none" />
+                    <circle cx="170" cy="170" r="140" fill="transparent" />
+
+                    <!-- Línea vertical divisoria central -->
+                    <line x1="170" y1="20" x2="170" y2="320" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4" opacity="0.6" />
+
+                    <!-- Textos guía sutiles dentro de cada mitad -->
+                    <text x="122" y="170" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(248, 113, 113, 0.45)">CONTRA</text>
+                    <text x="218" y="170" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(56, 189, 248, 0.45)">FAVOR</text>
+
+                    <!-- Líneas diagonales de tu código original -->
+                    <g id="originalCrossLines"></g>
+                    <!-- Marcas de las 12 horas del reloj moderno -->
+                    <g id="clockTicks"></g>
+                    <!-- Aguja indicadora -->
+                    <line id="windArrow" x1="170" y1="170" x2="170" y2="65" stroke="#facc15" stroke-width="4" style="display:none;" />
+                    <circle id="windCenter" cx="170" cy="170" r="6" fill="#facc15" style="display:none;" />
+                    <!-- Los 32 puntos exactos -->
+                    <g id="nodesGroup"></g>
+                </svg>
+            </div>
+
+            <div class="side-card">
+                <div class="side-card-title">VIENTO &gt;15</div>
+                <div class="tip-item">
+                    <span class="tip-label">⬅ CONTRA</span>
+                    <span class="tip-val-plus">+0.10 Fuerza</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-label">➡ FAVOR</span>
+                    <span class="tip-val-minus">-0.08 Fuerza</span>
+                </div>
+            </div>
         </div>
 
         <div class="controls-grid">
@@ -206,14 +327,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Activar Wake Lock (Pantalla encendida siempre)
+            // Wake Lock para mantener la pantalla encendida
             let wakeLock = null;
             async function requestWakeLock() {
                 try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch (err) {}
             }
             requestWakeLock();
+            document.addEventListener('visibilitychange', () => {
+                if (wakeLock !== null && document.visibilityState === 'visible') requestWakeLock();
+            });
 
-            // TABLA OFICIAL PUERA: Valores según la Regla de 20 (1 a 40)
+            // Tabla exacta de Power (VALORES REGLA 20)
             const tablaRegla20 = {
                 1: 0.31, 2: 0.57, 3: 0.83, 4: 1.09, 5: 1.35,
                 6: 1.46, 7: 1.57, 8: 1.68, 9: 1.79, 10: 1.90,
@@ -226,6 +350,7 @@
             };
 
             const svg = document.getElementById('windSvg');
+            const originalCrossLines = document.getElementById('originalCrossLines');
             const clockTicks = document.getElementById('clockTicks');
             const nodesGroup = document.getElementById('nodesGroup');
             const windArrow = document.getElementById('windArrow');
@@ -236,7 +361,7 @@
 
             const centerX = 170, centerY = 170, radius = 105, labelRadius = 138, numCheckboxes = 32;
 
-            // Arreglo original exacto de 32 posiciones
+            // Tus 32 factores originales exactos
             const checkboxValues = [
                 0.2, 0.1, 0.1, 0.18, 0.28, 0.45, 0.5, 0.6,
                 0.67, 0.65, 0.6, 0.6, 0.6, 0.55, 0.5, 0.25,
@@ -248,20 +373,50 @@
             const blueIndices = [1, 18];
             let selectedIndex = -1;
 
-            // Dibujar 12 marcas de reloj (HUD Moderno)
-            for (let i = 0; i < 12; i++) {
-                const angle = (i * 30) * Math.PI / 180;
+            // 1. Dibujar las 4 líneas diagonales/cruz de tu código original
+            function drawOriginalLine(idx1, idx2) {
+                const a1 = -Math.PI / 2 - (idx1 / numCheckboxes) * 2 * Math.PI;
+                const a2 = -Math.PI / 2 - (idx2 / numCheckboxes) * 2 * Math.PI;
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', centerX + (radius - 12) * Math.cos(angle));
-                line.setAttribute('y1', centerY + (radius - 12) * Math.sin(angle));
+                line.setAttribute('x1', centerX + Math.cos(a1) * radius);
+                line.setAttribute('y1', centerY + Math.sin(a1) * radius);
+                line.setAttribute('x2', centerX + Math.cos(a2) * radius);
+                line.setAttribute('y2', centerY + Math.sin(a2) * radius);
+                line.setAttribute('stroke', 'rgba(255, 255, 255, 0.15)');
+                line.setAttribute('stroke-width', '1.5');
+                originalCrossLines.appendChild(line);
+            }
+            drawOriginalLine(0, 16);
+            drawOriginalLine(4, 20);
+            drawOriginalLine(8, 24);
+            drawOriginalLine(12, 28);
+
+            // 2. Dibujar las 12 horas del reloj moderno (cada 30 grados)
+            for (let i = 0; i < 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', centerX + (radius - 14) * Math.cos(angle));
+                line.setAttribute('y1', centerY + (radius - 14) * Math.sin(angle));
                 line.setAttribute('x2', centerX + radius * Math.cos(angle));
                 line.setAttribute('y2', centerY + radius * Math.sin(angle));
                 line.setAttribute('stroke', '#22c55e');
-                line.setAttribute('stroke-width', '3');
+                line.setAttribute('stroke-width', i % 3 === 0 ? '3.5' : '2');
                 clockTicks.appendChild(line);
+
+                const hourNum = i === 0 ? 12 : i;
+                const hText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                hText.setAttribute('x', centerX + (radius - 25) * Math.cos(angle));
+                hText.setAttribute('y', centerY + (radius - 25) * Math.sin(angle));
+                hText.setAttribute('text-anchor', 'middle');
+                hText.setAttribute('dominant-baseline', 'central');
+                hText.setAttribute('font-size', '9');
+                hText.setAttribute('font-weight', 'bold');
+                hText.setAttribute('fill', '#94a3b8');
+                hText.textContent = hourNum;
+                clockTicks.appendChild(hText);
             }
 
-            // Dibujar 32 nodos y etiquetas de factor
+            // 3. Dibujar los 32 nodos interactivos y sus factores
             for (let i = 0; i < 32; i++) {
                 const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -316,25 +471,24 @@
             svg.addEventListener('touchmove', (e) => { if (isDragging) handleTouch(e); }, { passive: true });
             svg.addEventListener('touchend', () => { isDragging = false; });
 
-            // CÁLCULO PURO (Regla de 70 + Fuerza Estática de Tabla)
             function calculateResult() {
                 const vientoValue = parseFloat(vientoInput.value);
                 const distValue = parseInt(distanciaInput.value);
 
                 if (selectedIndex !== -1 && !isNaN(vientoValue) && vientoInput.value.trim() !== '') {
-                    const checkboxNum = selectedIndex + 1; // 1 a 32
+                    const checkboxNum = selectedIndex + 1; // 1 al 32
                     const checkboxValue = checkboxValues[selectedIndex];
-                    let multResult = checkboxValue * vientoValue;
+                    let effect = checkboxValue * vientoValue;
 
-                    // Hemisferio Izquierdo (Casillas 3 a 18): En Contra -> 70 - (Factor * Viento)
+                    // Mitad Izquierda Roja (casillas 3 al 18): En Contra (-70)
                     const decrementGroup = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
                     let angleResult;
                     
                     if (decrementGroup.includes(checkboxNum)) {
-                        angleResult = 70 - multResult;
+                        angleResult = 70 - effect;
                     } else {
-                        // Hemisferio Derecho: A Favor -> 70 + (Factor * Viento)
-                        angleResult = 70 + multResult;
+                        // Mitad Derecha Celeste: A Favor (+70)
+                        angleResult = 70 + effect;
                     }
 
                     document.getElementById('dispAngle').innerText = `${angleResult.toFixed(1)}°`;
@@ -342,7 +496,7 @@
                     document.getElementById('dispAngle').innerText = '--°';
                 }
 
-                // Fuerza pura extraída directamente de la tabla (sin alterar potencia)
+                // Fuerza exacta sin alteraciones de tu tabla
                 if (!isNaN(distValue) && distValue > 0) {
                     const power = tablaRegla20[distValue] || '--';
                     document.getElementById('dispPower').innerText = power;
