@@ -41,7 +41,6 @@
             margin-bottom: 6px;
         }
 
-        /* Leyenda rápida arriba del reloj */
         .color-legend {
             display: flex;
             justify-content: space-around;
@@ -56,7 +55,6 @@
         .leg-contra { color: #f87171; }
         .leg-favor { color: #38bdf8; }
 
-        /* Reloj gigante ocupando todo el ancho disponible */
         .circle-box {
             width: 100%;
             max-width: 420px;
@@ -127,37 +125,73 @@
             transform: scale(0.96);
         }
 
+        /* Caja Principal de Resultados: Ángulo + Estático vs Automático */
         .results-box {
             width: 100%;
             padding: 10px;
             background: #0284c7;
             border-radius: 14px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 8px;
             margin-bottom: 10px;
         }
 
         .res-card {
             background: #0f172a;
-            padding: 10px 4px;
+            padding: 8px 6px;
             border-radius: 10px;
             border: 1px solid #38bdf8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .res-title {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             color: #94a3b8;
         }
 
         .res-value {
-            font-size: 2.1rem;
+            font-size: 2rem;
             font-weight: 900;
             color: #facc15;
             margin-top: 2px;
         }
 
-        /* Cuadros Tácticos en 2 Columnas Anchas y Legibles */
+        /* División Interna: Dato Estático (Izq) | Dato Automático (Der) */
+        .power-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-top: 4px;
+            align-items: center;
+        }
+
+        .p-col-static {
+            border-right: 1px solid rgba(148, 163, 184, 0.3);
+            padding-right: 4px;
+        }
+
+        .p-sublabel {
+            font-size: 0.56rem;
+            color: #94a3b8;
+            display: block;
+        }
+
+        .p-val-static {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .p-val-auto {
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: #4ade80;
+        }
+
+        /* Cuadros Inferiores con Valores Ya Calculados Automáticamente */
         .tips-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -180,22 +214,53 @@
             font-weight: 900;
             border-bottom: 1px solid rgba(56, 189, 248, 0.3);
             padding-bottom: 4px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
         }
 
-        .tip-item {
+        .auto-row {
             background: #0f172a;
-            padding: 6px;
-            border-radius: 6px;
-            font-size: 0.72rem;
+            border: 1px solid #334155;
+            padding: 7px 6px;
+            border-radius: 7px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.2s;
         }
 
-        .tip-label { color: #cbd5e1; font-weight: 700; }
-        .tip-val-plus { color: #facc15; font-weight: 900; }
-        .tip-val-minus { color: #38bdf8; font-weight: 900; }
+        .auto-row.active-wind {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.14);
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+        }
+
+        .tip-info {
+            text-align: left;
+        }
+
+        .tip-label {
+            color: #cbd5e1;
+            font-weight: 700;
+            font-size: 0.68rem;
+            display: block;
+        }
+
+        .tip-delta {
+            font-size: 0.58rem;
+            color: #94a3b8;
+        }
+
+        .auto-result-plus {
+            color: #facc15;
+            font-size: 1.05rem;
+            font-weight: 900;
+        }
+
+        .auto-result-minus {
+            color: #38bdf8;
+            font-size: 1.05rem;
+            font-weight: 900;
+        }
 
         .bottom-image {
             width: 100%;
@@ -215,28 +280,21 @@
     <div class="container">
         <div class="wake-status" id="wakeStatus">🔒 Pantalla encendida continuamente</div>
 
-        <!-- Leyenda visual rápida -->
         <div class="color-legend">
             <span class="leg-contra">🔴 IZQ: CONTRA (-70)</span>
             <span class="leg-favor">🔵 DER: FAVOR (+70)</span>
         </div>
 
-        <!-- Círculo Gigante con Puntos Grandes y Números Discretos -->
         <div class="circle-box">
             <svg id="windSvg" viewBox="0 0 360 360">
-                <!-- Mitad Izquierda Roja (En Contra) -->
                 <path d="M 180 42 A 138 138 0 0 0 180 318 Z" fill="rgba(239, 68, 68, 0.18)" />
-                <!-- Mitad Derecha Celeste (A Favor) -->
                 <path d="M 180 42 A 138 138 0 0 1 180 318 Z" fill="rgba(56, 189, 248, 0.18)" />
 
-                <!-- Borde exterior ampliado -->
                 <circle cx="180" cy="180" r="138" stroke="#38bdf8" stroke-width="3" fill="none" />
                 <circle cx="180" cy="180" r="172" fill="transparent" />
 
-                <!-- Línea vertical divisoria central -->
                 <line x1="180" y1="12" x2="180" y2="348" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4" opacity="0.6" />
 
-                <!-- Textos guía desplazados abajo para no estorbar las horas 9 y 3 -->
                 <text x="125" y="212" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(248, 113, 113, 0.45)">CONTRA</text>
                 <text x="235" y="212" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(56, 189, 248, 0.45)">FAVOR</text>
 
@@ -248,7 +306,6 @@
             </svg>
         </div>
 
-        <!-- Entradas de Distancia y Viento -->
         <div class="controls-grid">
             <div class="input-box">
                 <label for="distancia">DISTANCIA (1-40)</label>
@@ -261,7 +318,7 @@
             <button id="reset-button">RESET</button>
         </div>
 
-        <!-- Resultados Principales -->
+        <!-- Resultados: Ángulo + Fuerza Estática al costado de Fuerza Automática -->
         <div class="results-box">
             <div class="res-card">
                 <div class="res-title">PONER ÁNGULO</div>
@@ -269,33 +326,54 @@
             </div>
             <div class="res-card">
                 <div class="res-title">BARRA FUERZA</div>
-                <div class="res-value" id="dispPower">--</div>
+                <div class="power-split">
+                    <div class="p-col-static">
+                        <span class="p-sublabel">ESTÁTICO</span>
+                        <span class="p-val-static" id="dispStaticPower">--</span>
+                    </div>
+                    <div>
+                        <span class="p-sublabel">AUTO</span>
+                        <span class="p-val-auto" id="dispAutoPower">--</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Cuadros Tácticos Inferiores -->
+        <!-- 4 Valores Calculados Automáticamente Sin Tocar Nada -->
         <div class="tips-grid">
             <div class="side-card">
-                <div class="side-card-title">TERRENO</div>
-                <div class="tip-item">
-                    <span class="tip-label">⬆ SUBIDA</span>
-                    <span class="tip-val-plus">+0.15</span>
+                <div class="side-card-title">TERRENO (AUTO)</div>
+                <div class="auto-row">
+                    <div class="tip-info">
+                        <span class="tip-label">⬆ SUBIDA</span>
+                        <span class="tip-delta">+0.15</span>
+                    </div>
+                    <span class="auto-result-plus" id="valSubida">--</span>
                 </div>
-                <div class="tip-item">
-                    <span class="tip-label">⬇ BAJADA</span>
-                    <span class="tip-val-minus">-0.10</span>
+                <div class="auto-row">
+                    <div class="tip-info">
+                        <span class="tip-label">⬇ BAJADA</span>
+                        <span class="tip-delta">-0.10</span>
+                    </div>
+                    <span class="auto-result-minus" id="valBajada">--</span>
                 </div>
             </div>
 
             <div class="side-card">
-                <div class="side-card-title">VIENTO &gt;15</div>
-                <div class="tip-item">
-                    <span class="tip-label">⬅ CONTRA</span>
-                    <span class="tip-val-plus">+0.10</span>
+                <div class="side-card-title">VIENTO &gt;15 (AUTO)</div>
+                <div class="auto-row" id="rowVientoContra">
+                    <div class="tip-info">
+                        <span class="tip-label">⬅ CONTRA</span>
+                        <span class="tip-delta">+0.10</span>
+                    </div>
+                    <span class="auto-result-plus" id="valVientoContra">--</span>
                 </div>
-                <div class="tip-item">
-                    <span class="tip-label">➡ FAVOR</span>
-                    <span class="tip-val-minus">-0.08</span>
+                <div class="auto-row" id="rowVientoFavor">
+                    <div class="tip-info">
+                        <span class="tip-label">➡ FAVOR</span>
+                        <span class="tip-delta">-0.08</span>
+                    </div>
+                    <span class="auto-result-minus" id="valVientoFavor">--</span>
                 </div>
             </div>
         </div>
@@ -340,7 +418,6 @@
             const distanciaInput = document.getElementById('distancia');
             const resetButton = document.getElementById('reset-button');
 
-            // Círculo mucho más grande (radius = 138) y números pegados (labelRadius = 160)
             const centerX = 180, centerY = 180, radius = 138, labelRadius = 160, numCheckboxes = 32;
 
             const checkboxValues = [
@@ -371,7 +448,6 @@
             drawOriginalLine(8, 24);
             drawOriginalLine(12, 28);
 
-            // Marcas de las 12 horas del reloj moderno
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30 - 90) * Math.PI / 180;
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -396,7 +472,6 @@
                 clockTicks.appendChild(hText);
             }
 
-            // 32 puntos grandes (6.5px) y números exteriores pequeños/sutiles (8.5px)
             for (let i = 0; i < 32; i++) {
                 const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -458,39 +533,72 @@
             function calculateResult() {
                 const vientoValue = parseFloat(vientoInput.value);
                 const distValue = parseInt(distanciaInput.value);
+                const decrementGroup = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
+                let isContra = null;
+
+                // 1. Cálculo de Ángulo
                 if (selectedIndex !== -1 && !isNaN(vientoValue) && vientoInput.value.trim() !== '') {
                     const checkboxNum = selectedIndex + 1;
                     const checkboxValue = checkboxValues[selectedIndex];
-                    let effect = checkboxValue * vientoValue;
+                    const effect = checkboxValue * vientoValue;
 
-                    const decrementGroup = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-                    let angleResult;
-                    
-                    if (decrementGroup.includes(checkboxNum)) {
-                        angleResult = 70 - effect;
-                    } else {
-                        angleResult = 70 + effect;
-                    }
+                    isContra = decrementGroup.includes(checkboxNum);
+                    const angleResult = isContra ? (70 - effect) : (70 + effect);
 
                     document.getElementById('dispAngle').innerText = `${angleResult.toFixed(1)}°`;
                 } else {
                     document.getElementById('dispAngle').innerText = '--°';
                 }
 
-                if (!isNaN(distValue) && distValue > 0) {
-                    const power = tablaRegla20[distValue] || '--';
-                    document.getElementById('dispPower').innerText = power;
+                // 2. Cálculo de Fuerza Estática + Automática + Los 4 Escenarios
+                const rowContra = document.getElementById('rowVientoContra');
+                const rowFavor = document.getElementById('rowVientoFavor');
+                rowContra.classList.remove('active-wind');
+                rowFavor.classList.remove('active-wind');
+
+                if (!isNaN(distValue) && distValue > 0 && tablaRegla20[distValue]) {
+                    const staticPower = tablaRegla20[distValue];
+                    let autoPower = staticPower;
+
+                    // Detección automática si el viento supera 15
+                    if (!isNaN(vientoValue) && vientoValue > 15 && isContra !== null) {
+                        if (isContra) {
+                            autoPower = staticPower + 0.10;
+                            rowContra.classList.add('active-wind');
+                        } else {
+                            autoPower = Math.max(0, staticPower - 0.08);
+                            rowFavor.classList.add('active-wind');
+                        }
+                    }
+
+                    // Mostrar Estático y Automático lado a lado
+                    document.getElementById('dispStaticPower').innerText = staticPower.toFixed(2);
+                    document.getElementById('dispAutoPower').innerText = autoPower.toFixed(2);
+
+                    // Rellenar automáticamente los 4 cuadros inferiores sobre la potencia activa
+                    document.getElementById('valSubida').innerText = (autoPower + 0.15).toFixed(2);
+                    document.getElementById('valBajada').innerText = Math.max(0, autoPower - 0.10).toFixed(2);
+                    document.getElementById('valVientoContra').innerText = (staticPower + 0.10).toFixed(2);
+                    document.getElementById('valVientoFavor').innerText = Math.max(0, staticPower - 0.08).toFixed(2);
                 } else {
-                    document.getElementById('dispPower').innerText = '--';
+                    document.getElementById('dispStaticPower').innerText = '--';
+                    document.getElementById('dispAutoPower').innerText = '--';
+                    document.getElementById('valSubida').innerText = '--';
+                    document.getElementById('valBajada').innerText = '--';
+                    document.getElementById('valVientoContra').innerText = '--';
+                    document.getElementById('valVientoFavor').innerText = '--';
                 }
             }
 
             vientoInput.addEventListener('input', calculateResult);
             distanciaInput.addEventListener('input', calculateResult);
             resetButton.addEventListener('click', () => {
-                selectedIndex = -1; vientoInput.value = ''; distanciaInput.value = '';
-                windArrow.style.display = 'none'; windCenter.style.display = 'none';
+                selectedIndex = -1;
+                vientoInput.value = '';
+                distanciaInput.value = '';
+                windArrow.style.display = 'none';
+                windCenter.style.display = 'none';
                 for (let i = 0; i < 32; i++) {
                     document.getElementById(`node-${i}`).setAttribute('r', '6.5');
                 }
