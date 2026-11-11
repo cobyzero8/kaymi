@@ -3,25 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Grub PRO - Regla de 20</title>
+    <title>Calculadora Grub - Coby (Regla 70/20)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Orbitron', sans-serif; background: #090d16; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-        .container { width: 100%; max-width: 420px; background: rgba(15, 23, 42, 0.95); padding: 16px; border-radius: 20px; box-shadow: 0 0 25px rgba(56, 189, 248, 0.3); text-align: center; border: 1px solid rgba(56, 189, 248, 0.4); }
+        
+        .container { width: 100%; max-width: 440px; background: rgba(15, 23, 42, 0.95); padding: 16px; border-radius: 20px; box-shadow: 0 0 25px rgba(56, 189, 248, 0.3); text-align: center; border: 1px solid rgba(56, 189, 248, 0.4); }
         .wake-status { font-size: 0.75rem; color: #4ade80; margin-bottom: 8px; }
-        .circle-box { width: 100%; max-width: 280px; margin: 0 auto 12px auto; }
+
+        /* Selector Adelante / Atrás */
+        .orient-box { display: flex; gap: 8px; margin-bottom: 10px; }
+        .orient-btn { flex: 1; padding: 10px; font-weight: bold; font-family: 'Orbitron'; border: 2px solid #38bdf8; border-radius: 8px; background: #0f172a; color: #94a3b8; cursor: pointer; transition: 0.2s; }
+        .orient-btn.active { background: #0284c7; color: #fff; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+
+        .circle-box { width: 100%; max-width: 300px; margin: 0 auto 10px auto; }
         #windSvg { width: 100%; height: auto; display: block; background: #030712; border-radius: 50%; cursor: pointer; touch-action: none; user-select: none; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+
         .controls-grid { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background-color: #1e293b; border-radius: 12px; margin-bottom: 12px; }
         .input-box { display: flex; flex-direction: column; align-items: center; }
         .input-box label { font-size: 0.75em; font-weight: 700; color: #38bdf8; margin-bottom: 4px; }
         .input-box input[type="number"] { padding: 8px; border: 2px solid #38bdf8; border-radius: 8px; font-size: 1.2em; width: 85px; background: #0f172a; color: #fff; text-align: center; font-weight: bold; }
         #reset-button { grid-column: span 2; padding: 10px; font-size: 0.9em; font-weight: bold; color: #fff; background: #ef4444; border: none; border-radius: 8px; cursor: pointer; }
+
         .results-box { width: 100%; padding: 10px; background: #0284c7; border-radius: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
         .res-card { background: #0f172a; padding: 8px 4px; border-radius: 10px; border: 1px solid #38bdf8; }
         .res-title { font-size: 0.65rem; color: #94a3b8; }
         .res-value { font-size: 1.9rem; font-weight: 900; color: #facc15; margin-top: 2px; }
+
         .bottom-image { width: 100%; margin-top: 6px; }
         .bottom-image img { width: 100%; height: auto; border-radius: 8px; opacity: 0.85; }
     </style>
@@ -30,6 +40,12 @@
 
     <div class="container">
         <div class="wake-status" id="wakeStatus">🔒 Pantalla encendida continuamente</div>
+
+        <!-- Botones para definir hacia dónde miras -->
+        <div class="orient-box">
+            <button class="orient-btn active" id="btnFrente" onclick="setOrientacion('frente')">DE FRENTE</button>
+            <button class="orient-btn" id="btnEspalda" onclick="setOrientacion('espalda')">DE ESPALDAS</button>
+        </div>
 
         <div class="circle-box">
             <svg id="windSvg" viewBox="0 0 340 340">
@@ -44,8 +60,8 @@
 
         <div class="controls-grid">
             <div class="input-box">
-                <label for="distancia">DISTANCIA (1-20 SD)</label>
-                <input type="number" id="distancia" placeholder="10" min="1" max="20" inputmode="numeric">
+                <label for="distancia">DISTANCIA (1-40)</label>
+                <input type="number" id="distancia" placeholder="10" min="1" max="40" inputmode="numeric">
             </div>
             <div class="input-box">
                 <label for="viento">VIENTO</label>
@@ -68,22 +84,39 @@
         <div class="bottom-image">
             <img src="https://i.postimg.cc/cJkpMPBM/REGLA-20.png" alt="REGLA 20">
         </div>
+        <div class="bottom-image">
+            <img src="https://raw.githubusercontent.com/cobyzero8/kaymi/refs/heads/main/VALORES%20REGLA%2020.png" alt="Valores Regla 20">
+        </div>
     </div>
 
     <script>
+        let orientacion = 'frente';
+
+        function setOrientacion(tipo) {
+            orientacion = tipo;
+            document.getElementById('btnFrente').classList.toggle('active', tipo === 'frente');
+            document.getElementById('btnEspalda').classList.toggle('active', tipo === 'espalda');
+            if (window.calculateResult) window.calculateResult();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Wake Lock API
             let wakeLock = null;
             async function requestWakeLock() {
                 try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch (err) {}
             }
             requestWakeLock();
 
-            // Tabla oficial delimitada exactamente a 20 (Pantalla completa SD)
+            // Tabla oficial "Valores según la Regla de 20" (1 a 40)
             const tablaRegla20 = {
                 1: 0.31, 2: 0.57, 3: 0.83, 4: 1.09, 5: 1.35,
                 6: 1.46, 7: 1.57, 8: 1.68, 9: 1.79, 10: 1.90,
                 11: 1.98, 12: 2.06, 13: 2.14, 14: 2.22, 15: 2.30,
-                16: 2.38, 17: 2.46, 18: 2.54, 19: 2.62, 20: 2.70
+                16: 2.38, 17: 2.46, 18: 2.54, 19: 2.62, 20: 2.70,
+                21: 2.76, 22: 2.82, 23: 2.88, 24: 2.94, 25: 3.00,
+                26: 3.06, 27: 3.12, 28: 3.18, 29: 3.24, 30: 3.00,
+                31: 3.36, 32: 3.42, 33: 3.48, 34: 3.54, 35: 3.60,
+                36: 3.66, 37: 3.72, 38: 3.78, 39: 3.84, 40: 3.90
             };
 
             const svg = document.getElementById('windSvg');
@@ -96,10 +129,20 @@
             const resetButton = document.getElementById('reset-button');
 
             const centerX = 170, centerY = 170, radius = 105, labelRadius = 138, numCheckboxes = 32;
-            const checkboxValues = [0.2, 0.1, 0.1, 0.18, 0.28, 0.45, 0.5, 0.6, 0.67, 0.65, 0.6, 0.6, 0.6, 0.55, 0.5, 0.25, 0.2, 0.15, 0.5, 0.15, 0.25, 0.35, 0.5, 0.6, 0.68, 0.7, 0.7, 0.7, 0.68, 0.6, 0.5, 0.35];
-            const specialIndices = [0, 4, 8, 12, 16, 20, 24, 28], blueIndices = [1, 18];
+
+            // Factores exactos de tu script original
+            const checkboxValues = [
+                0.2, 0.1, 0.1, 0.18, 0.28, 0.45, 0.5, 0.6,
+                0.67, 0.65, 0.6, 0.6, 0.6, 0.55, 0.5, 0.25,
+                0.2, 0.15, 0.5, 0.15, 0.25, 0.35, 0.5, 0.6,
+                0.68, 0.7, 0.7, 0.7, 0.68, 0.6, 0.5, 0.35
+            ];
+
+            const specialIndices = [0, 4, 8, 12, 16, 20, 24, 28];
+            const blueIndices = [1, 18];
             let selectedIndex = -1;
 
+            // Dibujar 12 marcas de reloj
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30) * Math.PI / 180;
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -112,6 +155,7 @@
                 clockTicks.appendChild(line);
             }
 
+            // Dibujar 32 posiciones
             for (let i = 0; i < 32; i++) {
                 const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -166,46 +210,54 @@
             svg.addEventListener('touchmove', (e) => { if (isDragging) handleTouch(e); }, { passive: true });
             svg.addEventListener('touchend', () => { isDragging = false; });
 
-            function calculateResult() {
+            // Lógica exacta de tu script original + inversión de espaldas
+            window.calculateResult = function() {
                 const vientoValue = parseFloat(vientoInput.value);
-                let distValue = parseInt(distanciaInput.value);
-
-                // Tope estricto a 20 (SD - Pantalla Completa)
-                if (distValue > 20) distValue = 20;
+                const distValue = parseInt(distanciaInput.value);
 
                 if (selectedIndex !== -1 && !isNaN(vientoValue) && vientoInput.value.trim() !== '') {
                     const checkboxNum = selectedIndex + 1;
                     const checkboxValue = checkboxValues[selectedIndex];
-                    let angleResult = checkboxValue * vientoValue;
+                    let multResult = checkboxValue * vientoValue;
 
+                    // Grupo en contra de tu código original (casillas 3 a 18)
                     const decrementGroup = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-                    if (decrementGroup.includes(checkboxNum)) {
-                        angleResult = 70 - angleResult;
+                    let isContra = decrementGroup.includes(checkboxNum);
+
+                    // Si estás disparando de ESPALDAS, la lógica del viento se invierte
+                    if (orientacion === 'espalda') {
+                        isContra = !isContra;
+                    }
+
+                    let angleResult;
+                    if (isContra) {
+                        angleResult = 70 - multResult;
                     } else {
-                        angleResult = angleResult + 70;
+                        angleResult = 70 + multResult;
                     }
                     document.getElementById('dispAngle').innerText = `${angleResult.toFixed(1)}°`;
                 } else {
                     document.getElementById('dispAngle').innerText = '--°';
                 }
 
+                // Obtener fuerza de la barra directamente de la tabla de distancias (1 a 40)
                 if (!isNaN(distValue) && distValue > 0) {
-                    const power = tablaRegla20[distValue] || 2.70;
-                    document.getElementById('dispPower').innerText = power.toFixed(2);
+                    const power = tablaRegla20[distValue] || '--';
+                    document.getElementById('dispPower').innerText = power;
                 } else {
                     document.getElementById('dispPower').innerText = '--';
                 }
-            }
+            };
 
-            vientoInput.addEventListener('input', calculateResult);
-            distanciaInput.addEventListener('input', calculateResult);
+            vientoInput.addEventListener('input', window.calculateResult);
+            distanciaInput.addEventListener('input', window.calculateResult);
             resetButton.addEventListener('click', () => {
                 selectedIndex = -1; vientoInput.value = ''; distanciaInput.value = '';
                 windArrow.style.display = 'none'; windCenter.style.display = 'none';
                 for (let i = 0; i < 32; i++) {
                     document.getElementById(`node-${i}`).setAttribute('r', '4');
                 }
-                calculateResult();
+                window.calculateResult();
             });
         });
     </script>
