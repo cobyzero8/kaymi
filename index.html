@@ -19,104 +19,48 @@
             color: #ffffff;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
             padding: 8px;
         }
 
         .container {
             width: 100%;
-            max-width: 520px;
-            background: rgba(15, 23, 42, 0.95);
-            padding: 14px;
-            border-radius: 20px;
+            max-width: 440px;
+            background: rgba(15, 23, 42, 0.98);
+            padding: 12px;
+            border-radius: 18px;
             box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
             text-align: center;
             border: 1px solid rgba(56, 189, 248, 0.4);
         }
 
         .wake-status {
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: #4ade80;
             margin-bottom: 6px;
         }
 
-        /* Leyenda rápida de colores arriba del reloj */
+        /* Leyenda rápida arriba del reloj */
         .color-legend {
             display: flex;
-            justify-content: center;
-            gap: 16px;
-            font-size: 0.68rem;
-            font-weight: 700;
+            justify-content: space-around;
+            background: #1e293b;
+            padding: 6px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 900;
             margin-bottom: 8px;
         }
 
-        .leg-contra {
-            color: #f87171;
-        }
+        .leg-contra { color: #f87171; }
+        .leg-favor { color: #38bdf8; }
 
-        .leg-favor {
-            color: #38bdf8;
-        }
-
-        /* Sección Central: Cuadro Izquierdo + Círculo SVG + Cuadro Derecho */
-        .radar-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-
-        .side-card {
-            flex: 1;
-            min-width: 75px;
-            max-width: 98px;
-            background: #1e293b;
-            border: 1px solid #38bdf8;
-            border-radius: 10px;
-            padding: 8px 4px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 0.58rem;
-            line-height: 1.25;
-        }
-
-        .side-card-title {
-            color: #38bdf8;
-            font-weight: 900;
-            border-bottom: 1px solid rgba(56, 189, 248, 0.3);
-            padding-bottom: 4px;
-            font-size: 0.62rem;
-        }
-
-        .tip-item {
-            background: #0f172a;
-            padding: 5px 3px;
-            border-radius: 6px;
-        }
-
-        .tip-label {
-            color: #94a3b8;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .tip-val-plus {
-            color: #facc15;
-            font-weight: 700;
-        }
-
-        .tip-val-minus {
-            color: #38bdf8;
-            font-weight: 700;
-        }
-
+        /* Reloj a ancho completo y gigante */
         .circle-box {
-            flex: 2.3;
-            max-width: 270px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto 10px auto;
         }
 
         #windSvg {
@@ -128,7 +72,7 @@
             cursor: pointer;
             touch-action: none;
             user-select: none;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.25);
         }
 
         .controls-grid {
@@ -139,7 +83,7 @@
             padding: 10px;
             background-color: #1e293b;
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .input-box {
@@ -149,7 +93,7 @@
         }
 
         .input-box label {
-            font-size: 0.75em;
+            font-size: 0.78em;
             font-weight: 700;
             color: #38bdf8;
             margin-bottom: 4px;
@@ -159,8 +103,8 @@
             padding: 8px;
             border: 2px solid #38bdf8;
             border-radius: 8px;
-            font-size: 1.2em;
-            width: 90px;
+            font-size: 1.35em;
+            width: 100px;
             background-color: #0f172a;
             color: #ffffff;
             text-align: center;
@@ -169,9 +113,9 @@
 
         #reset-button {
             grid-column: span 2;
-            padding: 10px;
-            font-size: 0.9em;
-            font-weight: bold;
+            padding: 11px;
+            font-size: 1em;
+            font-weight: 900;
             color: #ffffff;
             background-color: #ef4444;
             border: none;
@@ -180,7 +124,7 @@
         }
 
         #reset-button:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
         .results-box {
@@ -191,27 +135,67 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .res-card {
             background: #0f172a;
-            padding: 8px 4px;
+            padding: 10px 4px;
             border-radius: 10px;
             border: 1px solid #38bdf8;
         }
 
         .res-title {
-            font-size: 0.65rem;
+            font-size: 0.72rem;
             color: #94a3b8;
         }
 
         .res-value {
-            font-size: 1.9rem;
+            font-size: 2.1rem;
             font-weight: 900;
             color: #facc15;
             margin-top: 2px;
         }
+
+        /* Cuadros Tácticos en 2 Columnas Anchas y Legibles */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .side-card {
+            background: #1e293b;
+            border: 1px solid #38bdf8;
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .side-card-title {
+            color: #38bdf8;
+            font-weight: 900;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+            padding-bottom: 4px;
+            font-size: 0.75rem;
+        }
+
+        .tip-item {
+            background: #0f172a;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tip-label { color: #cbd5e1; font-weight: 700; }
+        .tip-val-plus { color: #facc15; font-weight: 900; }
+        .tip-val-minus { color: #38bdf8; font-weight: 900; }
 
         .bottom-image {
             width: 100%;
@@ -222,7 +206,7 @@
             width: 100%;
             height: auto;
             border-radius: 8px;
-            opacity: 0.85;
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -237,63 +221,34 @@
             <span class="leg-favor">🔵 DER: FAVOR (+70)</span>
         </div>
 
-        <!-- Fila Principal: Cuadro Terreno + Reloj Bicolor + Cuadro Viento Fuerte -->
-        <div class="radar-wrapper">
-            <div class="side-card">
-                <div class="side-card-title">TERRENO</div>
-                <div class="tip-item">
-                    <span class="tip-label">⬆ SUBIDA</span>
-                    <span class="tip-val-plus">+0.15 Fuerza</span>
-                </div>
-                <div class="tip-item">
-                    <span class="tip-label">⬇ BAJADA</span>
-                    <span class="tip-val-minus">-0.10 Fuerza</span>
-                </div>
-            </div>
+        <!-- Círculo Gigante a Ancho Completo -->
+        <div class="circle-box">
+            <svg id="windSvg" viewBox="0 0 360 360">
+                <!-- Mitad Izquierda Roja (En Contra) -->
+                <path d="M 180 65 A 115 115 0 0 0 180 295 Z" fill="rgba(239, 68, 68, 0.18)" />
+                <!-- Mitad Derecha Celeste (A Favor) -->
+                <path d="M 180 65 A 115 115 0 0 1 180 295 Z" fill="rgba(56, 189, 248, 0.18)" />
 
-            <div class="circle-box">
-                <svg id="windSvg" viewBox="0 0 340 340">
-                    <!-- Mitad Izquierda Roja (En Contra) -->
-                    <path d="M 170 65 A 105 105 0 0 0 170 275 Z" fill="rgba(239, 68, 68, 0.16)" />
-                    <!-- Mitad Derecha Celeste (A Favor) -->
-                    <path d="M 170 65 A 105 105 0 0 1 170 275 Z" fill="rgba(56, 189, 248, 0.16)" />
+                <!-- Borde exterior -->
+                <circle cx="180" cy="180" r="115" stroke="#38bdf8" stroke-width="3" fill="none" />
+                <circle cx="180" cy="180" r="155" fill="transparent" />
 
-                    <!-- Borde exterior -->
-                    <circle cx="170" cy="170" r="105" stroke="#38bdf8" stroke-width="3" fill="none" />
-                    <circle cx="170" cy="170" r="140" fill="transparent" />
+                <!-- Línea vertical divisoria central -->
+                <line x1="180" y1="15" x2="180" y2="345" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4" opacity="0.6" />
 
-                    <!-- Línea vertical divisoria central -->
-                    <line x1="170" y1="20" x2="170" y2="320" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4" opacity="0.6" />
+                <!-- Textos guía dentro de cada mitad -->
+                <text x="126" y="180" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="900" fill="rgba(248, 113, 113, 0.55)">CONTRA</text>
+                <text x="234" y="180" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="900" fill="rgba(56, 189, 248, 0.55)">FAVOR</text>
 
-                    <!-- Textos guía sutiles dentro de cada mitad -->
-                    <text x="122" y="170" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(248, 113, 113, 0.45)">CONTRA</text>
-                    <text x="218" y="170" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="900" fill="rgba(56, 189, 248, 0.45)">FAVOR</text>
-
-                    <!-- Líneas diagonales de tu código original -->
-                    <g id="originalCrossLines"></g>
-                    <!-- Marcas de las 12 horas del reloj moderno -->
-                    <g id="clockTicks"></g>
-                    <!-- Aguja indicadora -->
-                    <line id="windArrow" x1="170" y1="170" x2="170" y2="65" stroke="#facc15" stroke-width="4" style="display:none;" />
-                    <circle id="windCenter" cx="170" cy="170" r="6" fill="#facc15" style="display:none;" />
-                    <!-- Los 32 puntos exactos -->
-                    <g id="nodesGroup"></g>
-                </svg>
-            </div>
-
-            <div class="side-card">
-                <div class="side-card-title">VIENTO &gt;15</div>
-                <div class="tip-item">
-                    <span class="tip-label">⬅ CONTRA</span>
-                    <span class="tip-val-plus">+0.10 Fuerza</span>
-                </div>
-                <div class="tip-item">
-                    <span class="tip-label">➡ FAVOR</span>
-                    <span class="tip-val-minus">-0.08 Fuerza</span>
-                </div>
-            </div>
+                <g id="originalCrossLines"></g>
+                <g id="clockTicks"></g>
+                <line id="windArrow" x1="180" y1="180" x2="180" y2="65" stroke="#facc15" stroke-width="4.5" style="display:none;" />
+                <circle id="windCenter" cx="180" cy="180" r="7" fill="#facc15" style="display:none;" />
+                <g id="nodesGroup"></g>
+            </svg>
         </div>
 
+        <!-- Entradas de Distancia y Viento -->
         <div class="controls-grid">
             <div class="input-box">
                 <label for="distancia">DISTANCIA (1-40)</label>
@@ -306,6 +261,7 @@
             <button id="reset-button">RESET</button>
         </div>
 
+        <!-- Resultados Principales -->
         <div class="results-box">
             <div class="res-card">
                 <div class="res-title">PONER ÁNGULO</div>
@@ -314,6 +270,33 @@
             <div class="res-card">
                 <div class="res-title">BARRA FUERZA</div>
                 <div class="res-value" id="dispPower">--</div>
+            </div>
+        </div>
+
+        <!-- Cuadros Tácticos Inferiores Bien Grandes -->
+        <div class="tips-grid">
+            <div class="side-card">
+                <div class="side-card-title">TERRENO</div>
+                <div class="tip-item">
+                    <span class="tip-label">⬆ SUBIDA</span>
+                    <span class="tip-val-plus">+0.15</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-label">⬇ BAJADA</span>
+                    <span class="tip-val-minus">-0.10</span>
+                </div>
+            </div>
+
+            <div class="side-card">
+                <div class="side-card-title">VIENTO &gt;15</div>
+                <div class="tip-item">
+                    <span class="tip-label">⬅ CONTRA</span>
+                    <span class="tip-val-plus">+0.10</span>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-label">➡ FAVOR</span>
+                    <span class="tip-val-minus">-0.08</span>
+                </div>
             </div>
         </div>
 
@@ -327,7 +310,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Wake Lock para mantener la pantalla encendida
             let wakeLock = null;
             async function requestWakeLock() {
                 try { if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen'); } catch (err) {}
@@ -337,7 +319,6 @@
                 if (wakeLock !== null && document.visibilityState === 'visible') requestWakeLock();
             });
 
-            // Tabla exacta de Power (VALORES REGLA 20)
             const tablaRegla20 = {
                 1: 0.31, 2: 0.57, 3: 0.83, 4: 1.09, 5: 1.35,
                 6: 1.46, 7: 1.57, 8: 1.68, 9: 1.79, 10: 1.90,
@@ -359,9 +340,9 @@
             const distanciaInput = document.getElementById('distancia');
             const resetButton = document.getElementById('reset-button');
 
-            const centerX = 170, centerY = 170, radius = 105, labelRadius = 138, numCheckboxes = 32;
+            // Radio ampliado a 360x360 para máxima legibilidad en móvil
+            const centerX = 180, centerY = 180, radius = 115, labelRadius = 152, numCheckboxes = 32;
 
-            // Tus 32 factores originales exactos
             const checkboxValues = [
                 0.2, 0.1, 0.1, 0.18, 0.28, 0.45, 0.5, 0.6,
                 0.67, 0.65, 0.6, 0.6, 0.6, 0.55, 0.5, 0.25,
@@ -373,7 +354,6 @@
             const blueIndices = [1, 18];
             let selectedIndex = -1;
 
-            // 1. Dibujar las 4 líneas diagonales/cruz de tu código original
             function drawOriginalLine(idx1, idx2) {
                 const a1 = -Math.PI / 2 - (idx1 / numCheckboxes) * 2 * Math.PI;
                 const a2 = -Math.PI / 2 - (idx2 / numCheckboxes) * 2 * Math.PI;
@@ -391,38 +371,38 @@
             drawOriginalLine(8, 24);
             drawOriginalLine(12, 28);
 
-            // 2. Dibujar las 12 horas del reloj moderno (cada 30 grados)
+            // Marcas de las 12 horas más grandes
             for (let i = 0; i < 12; i++) {
                 const angle = (i * 30 - 90) * Math.PI / 180;
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', centerX + (radius - 14) * Math.cos(angle));
-                line.setAttribute('y1', centerY + (radius - 14) * Math.sin(angle));
+                line.setAttribute('x1', centerX + (radius - 16) * Math.cos(angle));
+                line.setAttribute('y1', centerY + (radius - 16) * Math.sin(angle));
                 line.setAttribute('x2', centerX + radius * Math.cos(angle));
                 line.setAttribute('y2', centerY + radius * Math.sin(angle));
                 line.setAttribute('stroke', '#22c55e');
-                line.setAttribute('stroke-width', i % 3 === 0 ? '3.5' : '2');
+                line.setAttribute('stroke-width', i % 3 === 0 ? '4' : '2.5');
                 clockTicks.appendChild(line);
 
                 const hourNum = i === 0 ? 12 : i;
                 const hText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                hText.setAttribute('x', centerX + (radius - 25) * Math.cos(angle));
-                hText.setAttribute('y', centerY + (radius - 25) * Math.sin(angle));
+                hText.setAttribute('x', centerX + (radius - 28) * Math.cos(angle));
+                hText.setAttribute('y', centerY + (radius - 28) * Math.sin(angle));
                 hText.setAttribute('text-anchor', 'middle');
                 hText.setAttribute('dominant-baseline', 'central');
-                hText.setAttribute('font-size', '9');
+                hText.setAttribute('font-size', '11');
                 hText.setAttribute('font-weight', 'bold');
-                hText.setAttribute('fill', '#94a3b8');
+                hText.setAttribute('fill', '#cbd5e1');
                 hText.textContent = hourNum;
                 clockTicks.appendChild(hText);
             }
 
-            // 3. Dibujar los 32 nodos interactivos y sus factores
+            // 32 nodos y números exteriores grandes (12.5px)
             for (let i = 0; i < 32; i++) {
                 const angle = -Math.PI / 2 - (i / numCheckboxes) * 2 * Math.PI;
                 const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
                 circle.setAttribute('cx', centerX + Math.cos(angle) * radius);
                 circle.setAttribute('cy', centerY + Math.sin(angle) * radius);
-                circle.setAttribute('r', '4');
+                circle.setAttribute('r', '4.5');
                 circle.setAttribute('id', `node-${i}`);
                 circle.setAttribute('fill', specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff'));
                 nodesGroup.appendChild(circle);
@@ -432,9 +412,10 @@
                 text.setAttribute('y', centerY + Math.sin(angle) * labelRadius);
                 text.setAttribute('text-anchor', 'middle');
                 text.setAttribute('dominant-baseline', 'central');
-                text.setAttribute('font-size', '10');
+                text.setAttribute('font-size', '12.5');
+                text.setAttribute('font-weight', '700');
                 text.setAttribute('font-family', 'Orbitron');
-                text.setAttribute('fill', specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#e2e8f0'));
+                text.setAttribute('fill', specialIndices.includes(i) ? '#f87171' : (blueIndices.includes(i) ? '#60a5fa' : '#f1f5f9'));
                 text.textContent = checkboxValues[i];
                 nodesGroup.appendChild(text);
             }
@@ -451,13 +432,13 @@
                 while (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
                 selectedIndex = Math.round((normalizedAngle / (2 * Math.PI)) * numCheckboxes) % numCheckboxes;
 
-                windArrow.setAttribute('x2', centerX + (radius - 15) * Math.cos(angle));
-                windArrow.setAttribute('y2', centerY + (radius - 15) * Math.sin(angle));
+                windArrow.setAttribute('x2', centerX + (radius - 16) * Math.cos(angle));
+                windArrow.setAttribute('y2', centerY + (radius - 16) * Math.sin(angle));
                 windArrow.style.display = 'block'; windCenter.style.display = 'block';
 
                 for (let i = 0; i < 32; i++) {
                     const node = document.getElementById(`node-${i}`);
-                    node.setAttribute('r', i === selectedIndex ? '7' : '4');
+                    node.setAttribute('r', i === selectedIndex ? '8' : '4.5');
                     node.setAttribute('fill', i === selectedIndex ? '#facc15' : (specialIndices.includes(i) ? '#ef4444' : (blueIndices.includes(i) ? '#3b82f6' : '#ffffff')));
                 }
                 calculateResult();
@@ -476,18 +457,16 @@
                 const distValue = parseInt(distanciaInput.value);
 
                 if (selectedIndex !== -1 && !isNaN(vientoValue) && vientoInput.value.trim() !== '') {
-                    const checkboxNum = selectedIndex + 1; // 1 al 32
+                    const checkboxNum = selectedIndex + 1;
                     const checkboxValue = checkboxValues[selectedIndex];
                     let effect = checkboxValue * vientoValue;
 
-                    // Mitad Izquierda Roja (casillas 3 al 18): En Contra (-70)
                     const decrementGroup = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
                     let angleResult;
                     
                     if (decrementGroup.includes(checkboxNum)) {
                         angleResult = 70 - effect;
                     } else {
-                        // Mitad Derecha Celeste: A Favor (+70)
                         angleResult = 70 + effect;
                     }
 
@@ -496,7 +475,6 @@
                     document.getElementById('dispAngle').innerText = '--°';
                 }
 
-                // Fuerza exacta sin alteraciones de tu tabla
                 if (!isNaN(distValue) && distValue > 0) {
                     const power = tablaRegla20[distValue] || '--';
                     document.getElementById('dispPower').innerText = power;
@@ -511,7 +489,7 @@
                 selectedIndex = -1; vientoInput.value = ''; distanciaInput.value = '';
                 windArrow.style.display = 'none'; windCenter.style.display = 'none';
                 for (let i = 0; i < 32; i++) {
-                    document.getElementById(`node-${i}`).setAttribute('r', '4');
+                    document.getElementById(`node-${i}`).setAttribute('r', '4.5');
                 }
                 calculateResult();
             });
